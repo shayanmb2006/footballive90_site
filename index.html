@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
+    <title>Home - Footballive90</title>
+    <meta name="description" content="Live football scores, match details, and news. The fastest app for live scores, match details, and news. Available for Android, iOS, and PWA.">
+    <meta name="keywords" content="football, live scores, football news, matches, premier league, la liga, football app">
+    <meta property="og:title" content="Footballive90 - Live Scores & Football News">
+    <meta property="og:description" content="The fastest app for live scores, match details, and news.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #00e676; --primary-dark: #00b359; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; --text-dim: #94a3b8; --accent-gold: #fbbf24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; overflow-x: hidden; line-height: 1.6; }
+        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
+
+        /* هدر و منو */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .hamburger { display: none; cursor: pointer; font-size: 24px; color: white; }
+
+        /* هیرو */
+        .hero { padding: 100px 5% 60px; display: flex; align-items: center; justify-content: space-between; min-height: 80vh; flex-wrap: wrap; gap: 40px; }
+        .hero-text { flex: 1; min-width: 300px; }
+        .hero-text h1 { font-size: 48px; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { color: var(--text-dim); margin-bottom: 30px; font-size: 18px; }
+        .download-btns { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .btn-store { background: white; color: black; }
+        .btn-pwa { background: var(--primary); color: #000; border: 2px solid transparent; }
+        .btn-pwa:hover { border-color: #fff; transform: translateY(-3px); }
+
+        .hero-image { flex: 1; min-width: 300px; display: flex; justify-content: center; }
+        .phone-mockup { width: 280px; height: 550px; background: #000; border-radius: 40px; border: 8px solid #333; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 230, 118, 0.2); }
+        .screen-content { background: linear-gradient(180deg, #1a237e 0%, #000 100%); height: 100%; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .live-dot { color: red; animation: pulse 1s infinite; display: block; margin-bottom: 5px; }
+
+        /* اخبار */
+        .news-section { padding: 60px 5%; }
+        .section-title { font-size: 32px; margin-bottom: 30px; position: relative; display: inline-block; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .news-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .news-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .news-img { width: 100%; height: 200px; object-fit: cover; }
+        .news-content { padding: 20px; }
+        .news-cat { font-size: 12px; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+        .news-headline { font-size: 18px; margin: 10px 0; line-height: 1.4; }
+
+        /* داینامیک کانتینر */
+        .dynamic-news-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+
+        footer { padding: 40px 5%; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: var(--text-dim); font-size: 14px; }
+        .footer-links { margin-top: 20px; display: flex; justify-content: center; gap: 20px; }
+        .footer-links a { color: #fff; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hamburger { display: block; z-index: 1001; }
+            .nav-links { position: fixed; top: 70px; right: -100%; width: 100%; height: calc(100vh - 70px); background: var(--dark-bg); flex-direction: column; justify-content: center; transition: 0.4s; border-top: 1px solid rgba(255,255,255,0.1); }
+            body.rtl .nav-links { right: auto; left: -100%; }
+            .nav-links.active { right: 0; } body.rtl .nav-links.active { left: 0; }
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 80px; }
+            .download-btns { justify-content: center; }
+            .hero-text h1 { font-size: 36px; }
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo"><span>Footballive90</span></a>
+        <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+        <nav class="nav-links">
+            <a href="index.html" class="active text-nav-home">Home</a>
+            <a href="matches.html" class="text-nav-matches">Matches</a>
+            <a href="news.html" class="text-nav-news">News</a>
+            <a href="about.html" class="text-nav-about">About</a>
+            <a href="contact.html" class="text-nav-contact">Contact</a>
+        </nav>
+        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
+    </header>
+
+    <!-- بخش هیرو (ثابت است) -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1 class="text-hero-title">Live Scores & Football News</h1>
+            <p class="text-hero-desc">The fastest app for live scores, match details, and news. Available for Android, iOS, and PWA.</p>
+            <div class="download-btns">
+                <a href="#" class="btn btn-store"><span>🤖</span> <span class="btn-text-android">Download Android</span></a>
+                <a href="#" class="btn btn-store"><span>🍎</span> <span class="btn-text-ios">Download iOS</span></a>
+                <a href="#" class="btn btn-pwa"><span>🌐</span> <span class="btn-text-pwa">Install App</span></a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="phone-mockup">
+                <div class="screen-content">
+                    <span class="live-dot">● LIVE</span>
+                    <div style="font-size:32px; font-weight:900; margin:10px 0;">2 - 1</div>
+                    <div style="font-size:12px; color:#aaa;">Real Madrid vs Barcelona</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش اخبار داینامیک (اینجا پر میشود) -->
+    <section class="news-section">
+        <h2 class="section-title text-section-news">Latest Updates</h2>
+        <!-- این کانتینر را جاوااسکریپت پر میکند -->
+        <div id="dynamic-news-grid" class="dynamic-news-container"></div>
+        
+        <div style="text-align:center; margin-top:30px;">
+            <a href="news.html" class="btn btn-pwa" style="margin:0 auto; display:inline-flex;">
+                <span class="text-read-all">Read All News</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Footballive90.</p>
+        <div class="footer-links">
+            <a href="privacy.html" class="text-footer-privacy">Privacy</a>
+            <a href="contact.html" class="text-footer-contact">Contact</a>
+        </div>
+    </footer>
+
+    <!-- API Client Script -->
+    <script src="js/api-client.js"></script>
+    <script>
+        /* 
+           ==============================================================
+           --- داده‌های اخبار از API دریافت می‌شود ---
+           ==============================================================
+           در صورت عدم دسترسی به API، از داده‌های fallback استفاده می‌شود.
+        */
+        
+        // داده‌های fallback در صورت خطا
+        const FALLBACK_NEWS_DATA = [
+            {
+                "category": "Premier League",
+                "title_en": "Loading latest news...",
+                "title_fa": "در حال بارگذاری آخرین اخبار...",
+                "image": "https://picsum.photos/seed/news1/400/200",
+                "link": "#"
+            }
+        ];
+        
+        let NEWS_DATA = [];
+
+        // --- منطق نمایش (این قسمت را دست نزنید) ---
+        
+        // زبان
+        let currentLang = 'en';
+        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
+
+        const translations = {
+            en: {
+                navHome: "Home", navMatches: "Matches", navNews: "News", navAbout: "About", navContact: "Contact",
+                heroTitle: "Live Scores & Football News",
+                heroDesc: "The fastest app for live scores, match details, and news.",
+                btnAndroid: "Download Android", btnIOS: "Download iOS", btnPWA: "Install App",
+                sectionNews: "Latest Updates", readAll: "Read All News", footerPrivacy: "Privacy", footerContact: "Contact"
+            },
+            fa: {
+                navHome: "خانه", navMatches: "بازی‌ها", navNews: "اخبار", navAbout: "درباره", navContact: "تماس",
+                heroTitle: "نتایج زنده و اخبار فوتبال",
+                heroDesc: "سریع‌ترین اپلیکیشن نتیجه زنده، جزئیات بازی و اخبار.",
+                btnAndroid: "دانلود اندروید", btnIOS: "دانلود آیفون", btnPWA: "نصب اپلیکیشن",
+                sectionNews: "آخرین به‌روزرسانی‌ها", readAll: "خواندن همه اخبار", footerPrivacy: "حریم خصوصی", footerContact: "تماس"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // آپدیت متون ثابت
+            document.querySelector('.text-nav-home').textContent = t.navHome;
+            document.querySelector('.text-nav-matches').textContent = t.navMatches;
+            document.querySelector('.text-nav-news').textContent = t.navNews;
+            document.querySelector('.text-nav-about').textContent = t.navAbout;
+            document.querySelector('.text-nav-contact').textContent = t.navContact;
+            document.querySelector('.text-hero-title').textContent = t.heroTitle;
+            document.querySelector('.text-hero-desc').textContent = t.heroDesc;
+            document.querySelector('.btn-text-android').textContent = t.btnAndroid;
+            document.querySelector('.btn-text-ios').textContent = t.btnIOS;
+            document.querySelector('.btn-text-pwa').textContent = t.btnPWA;
+            document.querySelector('.text-section-news').textContent = t.sectionNews;
+            document.querySelector('.text-read-all').textContent = t.readAll;
+            document.querySelector('.text-footer-privacy').textContent = t.footerPrivacy;
+            document.querySelector('.text-footer-contact').textContent = t.footerContact;
+
+            // آپدیت RTL
+            if (lang === 'fa') {
+                document.body.classList.add('rtl');
+                document.body.style.fontFamily = "'Vazirmatn', sans-serif";
+                document.documentElement.dir = "rtl";
+            } else {
+                document.body.classList.remove('rtl');
+                document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.documentElement.dir = "ltr";
+            }
+
+            // رندر کردن اخبار با زبان جدید
+            renderNews();
+        }
+
+        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
+
+        async function loadNewsFromAPI() {
+            const container = document.getElementById('dynamic-news-grid');
+            
+            // نمایش loading
+            container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">Loading news...</div>';
+            
+            try {
+                // تلاش برای دریافت اخبار از API
+                if (window.FootballAPI) {
+                    const newsItems = await window.FootballAPI.getNewsItems(6);
+                    if (newsItems && newsItems.length > 0) {
+                        NEWS_DATA = newsItems;
+                        renderNews();
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading news from API:', error);
+            }
+            
+            // در صورت خطا، از fallback استفاده کن
+            NEWS_DATA = FALLBACK_NEWS_DATA;
+            renderNews();
+        }
+
+        function renderNews() {
+            const container = document.getElementById('dynamic-news-grid');
+            
+            if (!NEWS_DATA || NEWS_DATA.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">No news available</div>';
+                return;
+            }
+
+            container.innerHTML = ""; // خالی کردن قبلی‌ها
+
+            NEWS_DATA.forEach(item => {
+                // انتخاب عنوان بر اساس زبان
+                const title = currentLang === 'fa' ? item.title_fa : item.title_en;
+
+                const html = `
+                    <div class="news-card">
+                        <img src="${item.image}" alt="${title}" class="news-img" onerror="this.src='https://picsum.photos/400/200'">
+                        <div class="news-content">
+                            <span class="news-cat">${item.category}</span>
+                            <h3 class="news-headline">${title}</h3>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('active'));
+        });
+
+        // اجرا
+        window.onload = () => {
+            setLanguage(currentLang);
+            // بارگذاری اخبار از API
+            loadNewsFromAPI();
+        };
+    </script>
+</body>
+</html>

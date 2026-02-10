@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Footballive90</title>
+    <meta name="description" content="Frequently asked questions about Footballive90 app. Find answers to common questions about installation, features, and usage.">
+    <meta name="keywords" content="FAQ, frequently asked questions, help, support, footballive90 questions">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
+        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+        .faq-container { max-width: 800px; margin: 0 auto; padding: 80px 5%; }
+        .faq-title { font-size: 32px; text-align: center; margin-bottom: 40px; }
+        details { background: var(--card-bg); margin-bottom: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        summary { padding: 20px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
+        .faq-answer { padding: 0 20px 20px 20px; color: #ccc; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo"><span>Footballive90</span></a>
+        <nav class="nav-links">
+            <a href="index.html" class="text-nav-home">Home</a>
+            <a href="faq.html" class="active text-nav-faq">FAQ</a>
+        </nav>
+        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
+    </header>
+
+    <div class="faq-container">
+        <h1 id="page-title" class="faq-title"></h1>
+        <div id="faq-list"></div>
+    </div>
+
+    <script>
+        // --- ویرایش کنید (سوالات) ---
+        const FAQ_DATA = {
+            "title_en": "Frequently Asked Questions", "title_fa": "سوالات متداول",
+            "items": [
+                {
+                    "q_en": "How do I install the app on Android?", "q_fa": "چطور اپلیکیشن را روی اندروید نصب کنم؟",
+                    "a_en": "Simply click the 'Download Android' button on the home page. Once the APK file is downloaded, open it and allow installation from unknown sources in your settings.", 
+                    "a_fa": "کافیست دکمه دانلود اندروید را بزنید. پس از دانلود فایل، آن را باز کنید و اجازه نصب از منابع ناشناخته را بدهید."
+                },
+                {
+                    "q_en": "Is the Premium subscription expensive?", "q_fa": "آیا اشتراک ویژه گران است؟",
+                    "a_en": "No, our premium subscription is very affordable and offers the best value.", 
+                    "a_fa": "خیر، قیمت اشتراک ما بسیار منصفانه است و برای حذف تبلیغات ارزش بالایی دارد."
+                }
+            ]
+        };
+
+        let currentLang = 'en';
+        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = FAQ_DATA;
+            const l = lang === 'fa' ? 'fa' : 'en';
+
+            document.getElementById('page-title').textContent = t[`title_${l}`];
+
+            const faqHtml = t.items.map(item => `
+                <details>
+                    <summary>${item[`q_${l}`]} <span>+</span></summary>
+                    <div class="faq-answer">${item[`a_${l}`]}</div>
+                </details>
+            `).join('');
+            document.getElementById('faq-list').innerHTML = faqHtml;
+
+            if (lang === 'fa') {
+                document.body.classList.add('rtl');
+                document.body.style.fontFamily = "'Vazirmatn', sans-serif";
+                document.documentElement.dir = "rtl";
+            } else {
+                document.body.classList.remove('rtl');
+                document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.documentElement.dir = "ltr";
+            }
+        }
+        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
+        window.onload = () => setLanguage(currentLang);
+    </script>
+</body>
+</html>

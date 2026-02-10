@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
+    <title>News - Footballive90</title>
+    <meta name="description" content="Latest football news, match results, and updates. Stay informed with the most recent football events and scores.">
+    <meta name="keywords" content="football news, latest updates, match results, football events">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
+        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+        .news-page-container { padding: 80px 5%; }
+        .news-page-title { font-size: 32px; margin-bottom: 40px; border-right: 5px solid var(--primary); padding-right: 20px; }
+        body.rtl .news-page-title { border-right: none; border-left: 5px solid var(--primary); padding-left: 20px; padding-right: 0; }
+        
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .news-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .news-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .news-img { width: 100%; height: 200px; object-fit: cover; }
+        .news-content { padding: 20px; }
+        .news-cat { font-size: 12px; color: var(--primary); text-transform: uppercase; font-weight: bold; }
+        .news-headline { font-size: 18px; margin: 10px 0; line-height: 1.4; }
+        
+        @media (max-width: 768px) { .nav-links { display: none; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo"><span>Footballive90</span></a>
+        <nav class="nav-links">
+            <a href="index.html" class="text-nav-home">Home</a>
+            <a href="matches.html" class="text-nav-matches">Matches</a>
+            <a href="news.html" class="active text-nav-news">News</a>
+            <a href="contact.html" class="text-nav-contact">Contact</a>
+        </nav>
+        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
+    </header>
+
+    <div class="news-page-container">
+        <h1 class="news-page-title text-news-title">Latest Updates</h1>
+        
+        <!-- اینجا لیست اخبار پر می‌شود -->
+        <div id="news-full-grid" class="news-grid"></div>
+    </div>
+
+    <!-- API Client Script -->
+    <script src="js/api-client.js"></script>
+    <script>
+        // --- داده‌های اخبار از API دریافت می‌شود ---
+        
+        // داده‌های fallback در صورت خطا
+        const FALLBACK_NEWS_DATA = [
+            {
+                "category": "Loading",
+                "title_en": "Loading news...",
+                "title_fa": "در حال بارگذاری اخبار...",
+                "image": "https://picsum.photos/seed/news1/400/200",
+                "link": "#"
+            }
+        ];
+        
+        let FULL_NEWS_DATA = [];
+
+        // --- منطق نمایش ---
+        let currentLang = 'en';
+        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
+
+        const translations = {
+            en: { title: "Latest Updates", readMore: "Read More", navHome: "Home", navMatches: "Matches", navNews: "News", navContact: "Contact" },
+            fa: { title: "آخرین اخبار", readMore: "بیشتر بخوانید", navHome: "خانه", navMatches: "بازی‌ها", navNews: "اخبار", navContact: "تماس" }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.querySelector('.text-news-title').textContent = t.title;
+            
+            document.querySelectorAll('.text-nav-home').forEach(el => el.textContent = t.navHome);
+            document.querySelectorAll('.text-nav-matches').forEach(el => el.textContent = t.navMatches);
+            document.querySelectorAll('.text-nav-news').forEach(el => el.textContent = t.navNews);
+            document.querySelectorAll('.text-nav-contact').forEach(el => el.textContent = t.navContact);
+
+            document.querySelectorAll('.read-more-link').forEach(el => el.textContent = t.readMore);
+
+            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
+            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
+            
+            renderNews();
+        }
+        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
+
+        async function loadNewsFromAPI() {
+            const container = document.getElementById('news-full-grid');
+            
+            // نمایش loading
+            container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">Loading news...</div>';
+            
+            try {
+                if (window.FootballAPI) {
+                    // دریافت اخبار بیشتر (15 مورد)
+                    const newsItems = await window.FootballAPI.getNewsItems(15);
+                    if (newsItems && newsItems.length > 0) {
+                        FULL_NEWS_DATA = newsItems;
+                        renderNews();
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading news from API:', error);
+            }
+            
+            // در صورت خطا، از fallback استفاده کن
+            FULL_NEWS_DATA = FALLBACK_NEWS_DATA;
+            renderNews();
+        }
+
+        function renderNews() {
+            const container = document.getElementById('news-full-grid');
+            
+            if (!FULL_NEWS_DATA || FULL_NEWS_DATA.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">No news available</div>';
+                return;
+            }
+
+            container.innerHTML = "";
+
+            FULL_NEWS_DATA.forEach(item => {
+                const title = currentLang === 'fa' ? item.title_fa : item.title_en;
+                const readMoreText = currentLang === 'fa' ? 'بیشتر بخوانید →' : 'Read More →';
+                const html = `
+                    <div class="news-card">
+                        <img src="${item.image}" alt="${title}" class="news-img" onerror="this.src='https://picsum.photos/400/200'">
+                        <div class="news-content">
+                            <span class="news-cat">${item.category}</span>
+                            <h3 class="news-headline">${title}</h3>
+                            <a href="${item.link}" class="read-more-link" style="color:var(--primary); text-decoration:none; font-size:14px; font-weight:bold;">${readMoreText}</a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        window.onload = () => {
+            setLanguage(currentLang);
+            // بارگذاری اخبار از API
+            loadNewsFromAPI();
+        };
+    </script>
+</body>
+</html>
