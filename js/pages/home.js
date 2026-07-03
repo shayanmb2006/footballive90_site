@@ -97,10 +97,12 @@
         const href = window.FootballAPI ? FootballAPI.buildNewsUrl(item) : (item.link || 'news.html');
         const target = item.is_external ? ' target="_blank" rel="noopener noreferrer"' : '';
         const readMore = SiteI18n.t('readMore');
+        const img = (window.NewsFallback && window.NewsFallback.resolveNewsImage(item)) || item.image || '';
+        const seed = item.id || item.external_link || title;
         return `
         <a href="${href}" class="news-card"${target}>
             <div class="news-img-wrap">
-                <img src="${item.image || ''}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
+                <img src="${img}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" data-fallback-seed="${escapeHtml(String(seed))}" onerror="NewsFallback.onImgError(this, this.dataset.fallbackSeed)">
             </div>
             <div class="news-content">
                 <span class="news-cat">${escapeHtml(cat)}</span>

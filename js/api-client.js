@@ -380,7 +380,7 @@
 
             title_fa,
 
-            image: imageUrl || 'https://picsum.photos/seed/football/400/200',
+            image: imageUrl || ((window.NewsFallback && window.NewsFallback.pickFallbackUrl(`fixture-${fixtureData.id}`)) || ''),
 
             isLogo: Boolean(imageUrl),
 
@@ -416,7 +416,8 @@
 
             summary_fa: item.summary_fa || item.summary_en || item.summary || '',
 
-            image: item.image || item.image_url || '',
+            image: (window.NewsFallback && window.NewsFallback.resolveNewsImage(item))
+                || item.image || item.image_url || '',
 
             isLogo: false,
 

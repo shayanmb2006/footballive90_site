@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" role="img" aria-label="Football">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3f1d1d"/><stop offset="100%" stop-color="#7f1d1d"/></linearGradient></defs>
+<rect width="400" height="225" fill="url(#g)"/>
+<rect x="0" y="112" width="400" height="2" fill="#f87171" opacity="0.35"/>
+<circle cx="200" cy="112" r="42" fill="none" stroke="#f87171" stroke-width="2" opacity="0.45"/>
+<circle cx="280" cy="78" r="14" fill="#f87171" opacity="0.85"/>
+</svg>

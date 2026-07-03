@@ -102,10 +102,12 @@
         const imgClass = item.isLogo ? 'news-img logo-fit' : 'news-img';
         const href = window.FootballAPI ? FootballAPI.buildNewsUrl(item) : (item.link || 'news.html');
         const target = item.is_external ? ' target="_blank" rel="noopener noreferrer"' : '';
+        const img = (window.NewsFallback && window.NewsFallback.resolveNewsImage(item)) || item.image || '';
+        const seed = item.id || item.external_link || title;
         return `
         <a href="${href}" class="news-card"${target}>
             <div class="news-img-wrap">
-                <img src="${item.image || ''}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
+                <img src="${img}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" data-fallback-seed="${escapeHtml(String(seed))}" onerror="NewsFallback.onImgError(this, this.dataset.fallbackSeed)">
             </div>
             <div class="news-content">
                 <span class="news-cat">${escapeHtml(cat)}</span>
@@ -140,7 +142,8 @@
         const bodyHtml = formatArticleBody(item);
         const cat = escapeHtml(newsCategory(item));
         const sourceUrl = item.external_link || '';
-        const img = item.image || 'https://picsum.photos/seed/fb/800/400';
+        const img = (window.NewsFallback && window.NewsFallback.resolveNewsImage(item)) || item.image || '';
+        const seed = item.id || item.external_link || item.title_en || item.title_fa || '';
 
         if (pageTitle) pageTitle.textContent = title;
         document.title = `${title} - Footballive90`;
@@ -152,7 +155,7 @@
                 <span class="news-cat">${cat || ''}</span>
                 <h1 class="news-article-title">${title}</h1>
                 <div class="news-article-img-wrap">
-                    <img src="${img}" alt="${title}" class="news-article-img" onerror="this.src='https://picsum.photos/seed/fb/800/400'">
+                    <img src="${img}" alt="${title}" class="news-article-img" data-fallback-seed="${seed}" onerror="NewsFallback.onImgError(this, this.dataset.fallbackSeed)">
                 </div>
                 <div class="news-article-body">${bodyHtml || `<p class="news-no-summary">${SiteI18n.lang === 'fa' ? 'خلاصه کامل در منبع اصلی موجود است.' : 'Full summary is on the original source.'}</p>`}</div>
                 ${sourceUrl ? `
