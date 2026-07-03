@@ -79,9 +79,11 @@
 
     function newsExcerpt(item, maxLen = 120) {
         const lang = SiteI18n.lang;
-        const text = (lang === 'fa'
-            ? (item.summary_fa || item.summary_en || item.summary)
-            : (item.summary_en || item.summary_fa || item.summary)) || '';
+        const text = (window.FootballAPI && FootballAPI.pickNewsSummary)
+            ? FootballAPI.pickNewsSummary(item, lang)
+            : ((lang === 'fa'
+                ? (item.summary_fa || item.summary_en || item.summary)
+                : (item.summary_en || item.summary_fa || item.summary)) || '');
         const clean = String(text).replace(/\s+/g, ' ').trim();
         if (!clean) return '';
         if (clean.length <= maxLen) return clean;
@@ -90,7 +92,9 @@
 
     function renderNewsCard(item) {
         const lang = SiteI18n.lang;
-        const title = lang === 'fa' ? item.title_fa : item.title_en;
+        const title = window.FootballAPI && FootballAPI.pickNewsTitle
+            ? FootballAPI.pickNewsTitle(item, lang)
+            : (lang === 'fa' ? (item.title_fa || item.title_en) : (item.title_en || item.title_fa));
         const cat = newsCategory(item);
         const excerpt = newsExcerpt(item);
         const imgClass = item.isLogo ? 'news-img logo-fit' : 'news-img';

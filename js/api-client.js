@@ -54,6 +54,57 @@
 
 
 
+    function hasPersian(text) {
+        return /[\u0600-\u06FF]/.test(String(text || ''));
+    }
+
+    function hasLatin(text) {
+        return /[a-zA-Z]/.test(String(text || ''));
+    }
+
+    function newsItemMatchesLang(item, lang) {
+        const code = lang === 'en' ? 'en' : 'fa';
+        const sourceLang = String(item?.source_lang || '').trim().toLowerCase();
+        const titleEn = String(item?.title_en || item?.title || '').trim();
+        const titleFa = String(item?.title_fa || '').trim();
+        const summaryFa = String(item?.summary_fa || '').trim();
+
+        if (sourceLang === 'both') return true;
+        if (sourceLang === 'en') {
+            if (code === 'en') return Boolean(titleEn) && hasLatin(titleEn);
+            return hasPersian(titleFa) || hasPersian(summaryFa);
+        }
+        if (sourceLang === 'fa') return code === 'fa';
+
+        if (code === 'en') {
+            if (!titleEn || !hasLatin(titleEn)) return false;
+            if (hasPersian(titleEn) && !hasLatin(titleEn)) return false;
+            if (titleFa && hasPersian(titleFa) && !hasLatin(titleEn)) return false;
+            return true;
+        }
+        return hasPersian(titleFa) || hasPersian(summaryFa) || hasPersian(titleEn);
+    }
+
+    function filterNewsByLang(items, lang, limit) {
+        if (!Array.isArray(items)) return [];
+        const cap = Math.max(1, Math.min(Number(limit) || 30, 30));
+        return items.filter((item) => newsItemMatchesLang(item, lang)).slice(0, cap);
+    }
+
+    function pickNewsTitle(item, lang) {
+        const isFa = lang === 'fa';
+        if (isFa) return item?.title_fa || item?.title_en || item?.title || '';
+        return item?.title_en || item?.title_fa || item?.title || '';
+    }
+
+    function pickNewsSummary(item, lang) {
+        const isFa = lang === 'fa';
+        if (isFa) return item?.summary_fa || item?.summary_en || item?.summary || '';
+        return item?.summary_en || item?.summary_fa || item?.summary || '';
+    }
+
+
+
     async function fetchAPI(endpoint, options = {}) {
 
         const url = `${API_BASE_URL}${endpoint}`;
@@ -429,6 +480,8 @@
 
             source: item.source || item.source_name || '',
 
+            source_lang: item.source_lang || '',
+
             published_at: item.published_at || '',
 
         };
@@ -507,7 +560,7 @@
 
         if (data?.response?.length) {
 
-            return data.response.map(normalizeRssNewsItem).filter(isRealNewsItem);
+            return filterNewsByLang(data.response.map(normalizeRssNewsItem), getLang(), limit).filter(isRealNewsItem);
 
         }
 
@@ -515,7 +568,7 @@
 
         if (fallback?.response?.length && fallback.source && fallback.source !== 'none') {
 
-            return fallback.response.map(normalizeRssNewsItem).filter(isRealNewsItem);
+            return filterNewsByLang(fallback.response.map(normalizeRssNewsItem), getLang(), limit).filter(isRealNewsItem);
 
         }
 
@@ -547,7 +600,9 @@
 
         const data = await fetchAPI(withLang(`/news/${articleId}`, {}));
 
-        return data?.article ? normalizeRssNewsItem(data.article) : null;
+        return data?.article && newsItemMatchesLang(data.article, getLang())
+            ? normalizeRssNewsItem(data.article)
+            : null;
 
     }
 
@@ -630,6 +685,14 @@
         pickMatchTeamName,
 
         getLang,
+
+        pickNewsTitle,
+
+        pickNewsSummary,
+
+        filterNewsByLang,
+
+        newsItemMatchesLang,
 
         API_BASE_URL,
 
