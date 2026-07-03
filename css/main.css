@@ -999,69 +999,76 @@ body.rtl .step-card:hover { transform: translateX(-6px); }
     .hamburger { display: block; z-index: 1001; }
 
     .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
     }
 
     .feature-card {
-        padding: 16px 12px;
+        padding: 12px 6px;
+        border-radius: 12px;
+        min-width: 0;
     }
 
     .feature-icon {
-        font-size: 1.65rem;
-        margin-bottom: 8px;
+        font-size: 1.35rem;
+        margin-bottom: 4px;
     }
 
     .feature-card h3 {
-        font-size: 0.85rem;
-        margin-bottom: 6px;
-    }
-
-    .feature-card p {
-        font-size: 0.72rem;
-        line-height: 1.45;
+        font-size: 0.62rem;
+        margin-bottom: 0;
+        line-height: 1.25;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    .feature-card p,
+    .feature-card-cta {
+        display: none;
     }
 
     .news-grid,
     .dynamic-news-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .news-card {
+        min-width: 0;
     }
 
     .news-img-wrap {
-        height: 96px;
+        height: 72px;
     }
 
     .news-content {
-        padding: 10px 12px;
+        padding: 8px 6px;
     }
 
     .news-headline {
-        font-size: 0.82rem;
-        margin: 4px 0;
+        font-size: 0.72rem;
+        margin: 3px 0 0;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        line-height: 1.35;
     }
 
-    .news-excerpt {
-        font-size: 0.72rem;
-        -webkit-line-clamp: 2;
-        margin-bottom: 6px;
+    .news-excerpt,
+    .news-read {
+        display: none;
     }
 
     .news-cat {
-        font-size: 0.58rem;
-        letter-spacing: 0.5px;
-    }
-
-    .news-read {
-        font-size: 0.72rem;
+        font-size: 0.52rem;
+        letter-spacing: 0.3px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .nav-links {
