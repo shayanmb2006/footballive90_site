@@ -1,144 +1,83 @@
-# Footballive90 Landing Page
+# Footballive90 Landing Site
 
-لندینگ پیج برای اپلیکیشن Footballive90 که به صورت مستقل کار می‌کند و از API بک‌اند استفاده می‌کند.
+لندینگ پیج فوتبالی با طراحی Stadium Night، دو زبانه EN/FA، و اتصال به API بک‌اند.
 
-## ویژگی‌ها
+## پیکربندی لینک‌ها (`.env`)
 
-✅ **اتصال به API واقعی** - داده‌های مسابقات و اخبار از API بک‌اند دریافت می‌شود  
-✅ **دو زبانه (EN/FA)** - پشتیبانی کامل از انگلیسی و فارسی با RTL  
-✅ **Responsive Design** - طراحی واکنش‌گرا برای تمام دستگاه‌ها  
-✅ **SEO Optimized** - شامل meta tags مناسب برای SEO  
-✅ **Fallback Data** - در صورت عدم دسترسی به API، از داده‌های fallback استفاده می‌کند  
+1. فایل `.env.example` را کپی کنید:
 
-## ساختار فایل‌ها
+```bash
+cp .env.example .env
+```
+
+2. مقادیر را ویرایش کنید (لینک‌های خالی = دکمه مخفی می‌شود):
+
+| متغیر | توضیح |
+|--------|--------|
+| `SITE_API_BASE_URL` | آدرس API بک‌اند |
+| `SITE_ANDROID_URL` | لینک Google Play یا APK |
+| `SITE_IOS_URL` | لینک App Store |
+| `SITE_PWA_URL` | لینک نصب PWA / وب‌اپ |
+| `SITE_APP_URL` | لینک ورود به اپ (دکمه «ورود به اپ») |
+| `SITE_CONTACT_EMAIL` | ایمیل پشتیبانی |
+| `SITE_CONTACT_PHONE` | تلفن |
+| `SITE_INSTAGRAM_URL` | اینستاگرام |
+| `SITE_TELEGRAM_URL` | تلگرام |
+| `SITE_TWITTER_URL` | توییتر/X |
+| `SITE_FAVICON_URL` | آیکون سایت |
+| `SITE_COPYRIGHT_YEAR` | سال کپی‌رایت |
+
+3. تولید فایل config برای فرانت:
+
+```bash
+node scripts/generate-config.js
+```
+
+خروجی: `js/site-config.js` — همه صفحات از این فایل لینک‌ها و API را می‌خوانند.
+
+### دیپلوی (Coolify / Docker)
+
+در مرحله build یا start، env را ست کنید و اسکریپت را اجرا کنید:
+
+```bash
+node scripts/generate-config.js
+```
+
+یا envها را مستقیم به `js/site-config.js` map کنید.
+
+## ساختار
 
 ```
 footballive90_site/
-├── index.html          # صفحه اصلی
-├── matches.html        # مسابقات امروز
-├── news.html           # اخبار فوتبال
-├── about.html          # درباره ما
-├── contact.html        # تماس با ما
-├── install.html        # راهنمای نصب
-├── faq.html            # سوالات متداول
-├── privacy.html        # حریم خصوصی
-├── pyment.html         # پرداخت (نیاز به بررسی)
+├── .env.example
+├── css/main.css           # استایل مشترک (3D + glass)
 ├── js/
-│   └── api-client.js   # کلاینت API برای اتصال به بک‌اند
-└── README.md           # این فایل
+│   ├── site-config.js     # ← از .env تولید می‌شود
+│   ├── i18n.js            # ترجمه + ذخیره زبان
+│   ├── layout.js          # هدر/فوتر مشترک
+│   ├── api-client.js      # API فوتبال
+│   └── pages/             # منطق هر صفحه
+├── scripts/generate-config.js
+└── *.html
 ```
 
-## نحوه استفاده
+## صفحات
 
-### 1. قرار دادن در پروژه
+- `index.html` — Hero زنده + تیکر + ویژگی‌ها + اخبار
+- `matches.html` — بازی‌های امروز با لوگو + فیلتر Live
+- `news.html` — نتایج و به‌روزرسانی‌ها
+- `about.html` — درباره ما
+- `contact.html` — فرم تماس
+- `install.html` — راهنمای نصب
+- `faq.html` — سوالات متداول
+- `privacy.html` — حریم خصوصی
 
-لندینگ پیج را می‌توانید:
-- به صورت static files سرو کنید (مثلاً از nginx)
-- در پوشه `public` پروژه React قرار دهید
-- به عنوان یک سایت مستقل روی سرور قرار دهید
+## توسعه محلی
 
-### 2. تنظیم API Base URL
-
-فایل `js/api-client.js` به صورت خودکار URL API را تشخیص می‌دهد:
-- در `localhost`: `http://localhost:5000/api`
-- در production: از همان origin استفاده می‌کند
-
-برای تنظیم دستی، در HTML:
-
-```html
-<script>
-    window.API_BASE_URL = 'https://your-api-domain.com/api';
-</script>
-<script src="js/api-client.js"></script>
+```bash
+# مثال با Python
+cd footballive90_site
+python -m http.server 8080
 ```
 
-### 3. Endpoint های مورد استفاده
-
-لندینگ پیج از این endpoint های بک‌اند استفاده می‌کند:
-
-- `GET /api/football/live` - مسابقات زنده
-- `GET /api/football/fixtures?date=YYYY-MM-DD` - مسابقات یک روز خاص
-- `POST /api/contact` - ارسال فرم تماس (اختیاری)
-
-**نکته مهم:** endpoint `/api/contact` در حال حاضر در بک‌اند وجود ندارد. اگر می‌خواهید فرم تماس واقعاً کار کند، باید این endpoint را به بک‌اند اضافه کنید.
-
-### 4. فرم تماس
-
-فرم تماس در `contact.html` به صورت پیش‌فرض:
-- در صورت وجود endpoint `/api/contact`، داده‌ها را ارسال می‌کند
-- در صورت عدم وجود، پیام موفقیت نمایش می‌دهد (برای UX بهتر)
-
-## سفارشی‌سازی
-
-### تغییر رنگ‌ها
-
-رنگ‌ها در CSS Variables تعریف شده‌اند:
-
-```css
-:root {
-    --primary: #00e676;        /* رنگ اصلی (سبز) */
-    --primary-dark: #00b359;
-    --dark-bg: #0f172a;        /* پس‌زمینه تیره */
-    --card-bg: #1e293b;        /* پس‌زمینه کارت‌ها */
-    --text-light: #f8fafc;     /* متن روشن */
-    --text-dim: #94a3b8;       /* متن تیره */
-    --accent-gold: #fbbf24;    /* طلایی */
-}
-```
-
-### تغییر متن‌ها
-
-تمام متن‌ها در JavaScript درون هر صفحه تعریف شده‌اند. برای تغییر، فایل HTML مربوطه را ویرایش کنید.
-
-## API Integration
-
-### نحوه کار
-
-1. **index.html**: از `FootballAPI.getNewsItems()` برای نمایش اخبار استفاده می‌کند
-2. **matches.html**: از `FootballAPI.getTodayMatches()` برای نمایش مسابقات امروز استفاده می‌کند
-3. **news.html**: از `FootballAPI.getNewsItems(15)` برای نمایش تمام اخبار استفاده می‌کند
-
-### فرمت داده
-
-API بک‌اند داده‌ها را به فرمت API-Football برمی‌گرداند. تابع‌های helper در `api-client.js` این داده‌ها را به فرمت مورد نیاز لندینگ پیج تبدیل می‌کنند.
-
-## به‌روزرسانی خودکار
-
-- مسابقات در صفحه `matches.html` هر 30 ثانیه به‌روز می‌شوند (فقط اگر مسابقه زنده وجود داشته باشد)
-- اخبار و مسابقات در هنگام بارگذاری صفحه از API دریافت می‌شوند
-
-## عیب‌یابی
-
-### مسابقات/اخبار نمایش داده نمی‌شوند
-
-1. بررسی کنید که بک‌اند در حال اجرا است
-2. در Console مرورگر خطاها را بررسی کنید
-3. بررسی کنید که URL API صحیح است
-4. بررسی کنید که CORS در بک‌اند فعال است
-
-### فرم تماس کار نمی‌کند
-
-فرم تماس به صورت پیش‌فرض فقط پیام موفقیت نمایش می‌دهد. برای ارسال واقعی:
-1. endpoint `/api/contact` را به بک‌اند اضافه کنید
-2. یا از یک سرویس خارجی مثل FormSpree استفاده کنید
-
-## نکات مهم
-
-⚠️ **بدون تغییر در بک‌اند/فرانت‌اند اصلی**: تمام تغییرات فقط در فولدر `footballive90_site` انجام شده است
-
-⚠️ **Fallback Data**: در صورت عدم دسترسی به API، از داده‌های fallback استفاده می‌شود
-
-⚠️ **CORS**: مطمئن شوید که CORS در بک‌اند برای domain لندینگ پیج فعال است
-
-## مراحل بعدی (پیشنهادی)
-
-- [ ] اضافه کردن endpoint `/api/contact` به بک‌اند
-- [ ] افزودن favicon واقعی
-- [ ] بهینه‌سازی تصاویر
-- [ ] اضافه کردن analytics (Google Analytics, etc.)
-- [ ] اضافه کردن sitemap.xml
-- [ ] بهبود SEO با structured data
-
-## پشتیبانی
-
-برای سوالات و مشکلات، با تیم توسعه تماس بگیرید.
+API در localhost: `SITE_API_BASE_URL=http://localhost:5000/api`

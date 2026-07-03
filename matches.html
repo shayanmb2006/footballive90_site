@@ -6,181 +6,31 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
     <title>Live Matches - Footballive90</title>
     <meta name="description" content="Watch live football matches, scores, and updates. Real-time match information for all major leagues.">
-    <meta name="keywords" content="live matches, football scores, live scores, matches today">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
-        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
-        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
-        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        .matches-container { padding: 80px 5%; max-width: 1000px; margin: 0 auto; }
-        .league-header { margin: 30px 0 20px; font-size: 18px; font-weight: bold; color: var(--primary); text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        
-        .match-card { background: var(--card-bg); border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .match-card:hover { border-color: var(--primary); }
-        .teams { display: flex; align-items: center; gap: 20px; flex: 2; }
-        .team-name { font-weight: 600; flex: 1; }
-        .score { font-size: 18px; font-weight: 800; color: white; background: #000; padding: 5px 10px; border-radius: 5px; }
-        .match-time { width: 80px; text-align: center; font-size: 14px; color: #ccc; }
-        
-        .live-indicator { width: 8px; height: 8px; background: red; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @media (max-width: 768px) { .nav-links { display: none; } }
-    </style>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-page="matches">
 
-    <header>
-        <a href="index.html" class="logo"><span>Footballive90</span></a>
-        <nav class="nav-links">
-            <a href="index.html" class="text-nav-home">Home</a>
-            <a href="matches.html" class="active text-nav-matches">Matches</a>
-            <a href="news.html" class="text-nav-news">News</a>
-            <a href="contact.html" class="text-nav-contact">Contact</a>
-        </nav>
-        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
-    </header>
+    <div id="site-header"></div>
 
-    <div class="matches-container">
-        <h2 class="text-matches-title" style="margin-bottom:30px; font-size:28px;">Today's Matches</h2>
-        
-        <!-- اینجا لیست بازی‌ها رندر می‌شود -->
+    <div class="page-header container">
+        <h1 id="page-title">Today's Matches</h1>
+        <div class="download-btns" style="margin-top:16px;">
+            <button type="button" class="btn btn-outline active" data-filter="all" data-page-i18n="filterAll">All</button>
+            <button type="button" class="btn btn-outline" data-filter="live" data-page-i18n="filterLive">Live</button>
+        </div>
+    </div>
+
+    <div class="container" style="padding-bottom:60px;">
         <div id="matches-list"></div>
     </div>
 
-    <!-- API Client Script -->
-    <script>
-        // Explicit backend URL for landing (www + non-www)
-        window.API_BASE_URL = 'https://mallmanbackend.footballive90.com/api';
-    </script>
+    <div id="site-footer"></div>
+
+    <script src="js/site-config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/layout.js"></script>
     <script src="js/api-client.js"></script>
-    <script>
-        // --- داده‌های مسابقات از API دریافت می‌شود ---
-        
-        // داده‌های fallback در صورت خطا
-        const FALLBACK_MATCHES_DATA = [
-            {
-                "id": 1,
-                "league_en": "Loading matches...", 
-                "league_fa": "در حال بارگذاری...",
-                "home_en": "...", "home_fa": "...",
-                "away_en": "...", "away_fa": "...",
-                "score": "-",
-                "time": "...",
-                "status": "NOT STARTED"
-            }
-        ];
-        
-        let MATCHES_DATA = [];
-
-        // --- منطق نمایش (دست نزنید) ---
-        let currentLang = 'en';
-        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
-
-        const translations = {
-            en: { title: "Today's Matches", navHome: "Home", navMatches: "Matches", navNews: "News", navContact: "Contact" },
-            fa: { title: "بازی‌های امروز", navHome: "خانه", navMatches: "بازی‌ها", navNews: "اخبار", navContact: "تماس" }
-        };
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            document.querySelector('.text-matches-title').textContent = t.title;
-            document.querySelector('.text-nav-home').textContent = t.navHome;
-            document.querySelector('.text-nav-matches').textContent = t.navMatches;
-            document.querySelector('.text-nav-news').textContent = t.navNews;
-            document.querySelector('.text-nav-contact').textContent = t.navContact;
-            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
-            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
-            renderMatches();
-        }
-        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
-
-        async function loadMatchesFromAPI() {
-            const container = document.getElementById('matches-list');
-            
-            // نمایش loading
-            container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">Loading matches...</div>';
-            
-            try {
-                if (window.FootballAPI) {
-                    // دریافت مسابقات امروز از API
-                    const matches = await window.FootballAPI.getTodayMatches();
-                    if (matches && matches.length > 0) {
-                        MATCHES_DATA = matches;
-                        renderMatches();
-                        return;
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading matches from API:', error);
-            }
-            
-            // در صورت خطا، از fallback استفاده کن
-            MATCHES_DATA = FALLBACK_MATCHES_DATA;
-            renderMatches();
-        }
-
-        function renderMatches() {
-            const container = document.getElementById('matches-list');
-            
-            if (!MATCHES_DATA || MATCHES_DATA.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8;">No matches available</div>';
-                return;
-            }
-            
-            container.innerHTML = "";
-            
-            let currentLeague = "";
-            
-            MATCHES_DATA.forEach(match => {
-                const league = currentLang === 'fa' ? match.league_fa : match.league_en;
-                const home = currentLang === 'fa' ? match.home_fa : match.home_en;
-                const away = currentLang === 'fa' ? match.away_fa : match.away_en;
-                const liveHTML = match.status === "LIVE" ? `<span class="live-indicator"></span>` : "";
-                const timeColor = match.status === "LIVE" ? "var(--primary)" : (match.status === "FINISHED" ? "#94a3b8" : "#ccc");
-
-                // اگر لیگ جدید است، هدر لیگ را چاپ کن
-                if(league !== currentLeague) {
-                    container.innerHTML += `<div class="league-header">${league}</div>`;
-                    currentLeague = league;
-                }
-
-                const html = `
-                    <div class="match-card">
-                        <div class="teams">
-                            <div class="team-name">${home}</div>
-                            <div class="score">${match.score}</div>
-                            <div class="team-name">${away}</div>
-                        </div>
-                        <div class="match-time" style="color:${timeColor}">${liveHTML} ${match.time}</div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
-        }
-
-        window.onload = () => {
-            setLanguage(currentLang);
-            // بارگذاری مسابقات از API
-            loadMatchesFromAPI();
-            
-            // به‌روزرسانی خودکار هر 30 ثانیه برای مسابقات زنده
-            setInterval(() => {
-                if (MATCHES_DATA.some(m => m.status === 'LIVE')) {
-                    loadMatchesFromAPI();
-                }
-            }, 30000);
-        };
-    </script>
+    <script src="js/pages/matches.js"></script>
 </body>
 </html>

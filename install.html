@@ -4,102 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Guide - Footballive90</title>
-    <meta name="description" content="Installation guide for Footballive90 app. Learn how to install on Android, iOS, and desktop devices.">
-    <meta name="keywords" content="install footballive90, download app, installation guide, PWA install">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
-        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
-        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
-        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        .guide-container { max-width: 800px; margin: 0 auto; padding: 80px 5%; }
-        .page-title { text-align: center; margin-bottom: 50px; font-size: 32px; }
-        
-        .step-card { background: var(--card-bg); padding: 30px; border-radius: 20px; margin-bottom: 30px; display: flex; align-items: flex-start; gap: 20px; border-left: 4px solid var(--primary); }
-        body.rtl .step-card { border-left: none; border-right: 4px solid var(--primary); }
-        
-        .step-num { background: var(--primary); color: #000; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: 20px; }
-        .step-content h3 { margin-bottom: 10px; font-size: 20px; }
-        .step-content p { color: #ccc; font-size: 14px; line-height: 1.6; }
-
-        @media (max-width: 768px) { .nav-links { display: none; } }
-    </style>
+    <meta name="description" content="Installation guide for Footballive90 on Android, iOS, and desktop.">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-page="install">
 
-    <header>
-        <a href="index.html" class="logo"><span>Footballive90</span></a>
-        <nav class="nav-links">
-            <a href="index.html" class="text-nav-home">Home</a>
-            <a href="install.html" class="active text-nav-install">Install</a>
-            <a href="faq.html" class="text-nav-faq">FAQ</a>
-        </nav>
-        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
-    </header>
+    <div id="site-header"></div>
 
-    <div class="guide-container">
-        <h1 id="page-title" class="page-title"></h1>
+    <div class="guide-wrap">
+        <h1 id="page-title"></h1>
         <div id="steps-list"></div>
+        <div class="download-btns text-center mt-2" style="justify-content:center;">
+            <a href="#" class="btn btn-store" data-link="android"><span>🤖</span> Android</a>
+            <a href="#" class="btn btn-store" data-link="ios"><span>🍎</span> iOS</a>
+        </div>
     </div>
 
-    <script>
-        // --- ویرایش کنید (راهنمای نصب) ---
-        const INSTALL_DATA = {
-            "title_en": "Installation Guide", "title_fa": "راهنمای نصب",
-            "steps": [
-                {
-                    "title_en": "For Android Users", "title_fa": "برای کاربران اندروید",
-                    "desc_en": "Download the APK file directly from our website. Go to Settings > Security > Allow Unknown Sources to install.", 
-                    "desc_fa": "فایل APK را مستقیماً از وب‌سایت ما دانلود کنید. وارد تنظیمات > امنیت شده و منبع ناشناخته را فعال کنید."
-                },
-                {
-                    "title_en": "For iPhone / iPad Users", "title_fa": "برای کاربران آیفون / آیپد",
-                    "desc_en": "Open this site in Safari. Tap the 'Share' button (square with arrow) and scroll down to select 'Add to Home Screen'.", 
-                    "desc_fa": "این سایت را در سافاری باز کنید. دکمه Share (مربع با فلش) را بزنید و به پایین اسکرول کنید و گزینه Add to Home Screen را انتخاب کنید."
-                },
-                {
-                    "title_en": "For Desktop / Laptop", "title_fa": "برای کامپیوتر و لپ‌تاپ",
-                    "desc_en": "Click the install icon (looks like a computer with a down arrow) in your browser's address bar to install the app.", 
-                    "desc_fa": "روی آیکون نصب (شبیه یک کامپیوتر با فلش رو به پایین) در نوار آدرس مرورگر خود کلیک کنید تا برنامه نصب شود."
-                }
-            ]
-        };
+    <div id="site-footer"></div>
 
-        let currentLang = 'en';
-        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = INSTALL_DATA;
-            const l = lang === 'fa' ? 'fa' : 'en';
-
-            document.getElementById('page-title').textContent = t[`title_${l}`];
-
-            const stepsHtml = t.steps.map((step, index) => `
-                <div class="step-card">
-                    <div class="step-num">${index + 1}</div>
-                    <div class="step-content">
-                        <h3>${step[`title_${l}`]}</h3>
-                        <p>${step[`desc_${l}`]}</p>
-                    </div>
-                </div>
-            `).join('');
-            
-            document.getElementById('steps-list').innerHTML = stepsHtml;
-
-            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
-            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
-        }
-        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
-        window.onload = () => setLanguage(currentLang);
-    </script>
+    <script src="js/site-config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/pages/install.js"></script>
 </body>
 </html>

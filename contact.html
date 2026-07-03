@@ -4,185 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Footballive90</title>
-    <meta name="description" content="Contact Footballive90 team. Have questions? Send us a message or contact us via email or phone.">
-    <meta name="keywords" content="contact footballive90, support, customer service, help">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
-        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
-        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
-        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        .contact-container { display: flex; padding: 80px 5%; gap: 50px; max-width: 1000px; margin: 0 auto; flex-wrap: wrap; }
-        .info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; font-size: 18px; }
-        .info-icon { width: 40px; height: 40px; background: var(--card-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary); font-size:20px;}
-        
-        .contact-form { flex: 1.5; background: var(--card-bg); padding: 40px; border-radius: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; margin-bottom: 10px; font-size: 14px; color: var(--primary); }
-        .form-input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #333; border-radius: 8px; color: white; font-family: inherit; }
-        .submit-btn { width: 100%; padding: 15px; background: var(--primary); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
-
-        @media (max-width: 768px) { .nav-links { display: none; } .contact-container { flex-direction: column; } }
-    </style>
+    <meta name="description" content="Contact Footballive90 team. Send us a message or reach us via email.">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-page="contact">
 
-    <header>
-        <a href="index.html" class="logo"><span>Footballive90</span></a>
-        <nav class="nav-links">
-            <a href="index.html" class="text-nav-home">Home</a>
-            <a href="contact.html" class="active text-nav-contact">Contact</a>
-        </nav>
-        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
-    </header>
+    <div id="site-header"></div>
 
-    <div class="contact-container">
-        <div style="flex:1;">
-            <h2 id="page-title" style="font-size:32px; margin-bottom:30px;"></h2>
-            <p id="page-desc" style="color:#aaa; margin-bottom:30px;"></p>
+    <div class="contact-wrap">
+        <div class="contact-info">
+            <h2 id="page-title"></h2>
+            <p id="page-desc" style="color:var(--text-dim); margin-bottom:24px;"></p>
             <div id="info-list"></div>
         </div>
 
-        <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+        <form class="contact-form" id="contact-form">
             <div class="form-group">
-                <label class="form-label text-label-name"></label>
-                <input type="text" class="form-input" id="contact-name" name="name" required placeholder="...">
+                <label class="form-label" id="label-name"></label>
+                <input type="text" class="form-input" id="contact-name" required>
             </div>
             <div class="form-group">
-                <label class="form-label text-label-email"></label>
-                <input type="email" class="form-input" id="contact-email" name="email" required placeholder="...">
+                <label class="form-label" id="label-email"></label>
+                <input type="email" class="form-input" id="contact-email" required>
             </div>
             <div class="form-group">
-                <label class="form-label text-label-message"></label>
-                <textarea class="form-input" id="contact-message" name="message" rows="5" required placeholder="..."></textarea>
+                <label class="form-label" id="label-msg"></label>
+                <textarea class="form-input" id="contact-message" rows="5" required></textarea>
             </div>
-            <div id="form-message" style="margin-bottom:15px; padding:10px; border-radius:5px; display:none;"></div>
-            <button type="submit" class="submit-btn text-btn-send" id="submit-btn"></button>
+            <div class="form-message" id="form-message"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;" id="submit-btn"></button>
         </form>
     </div>
 
-    <!-- API Client Script -->
-    <script>
-        // Explicit backend URL for landing (www + non-www)
-        window.API_BASE_URL = 'https://mallmanbackend.footballive90.com/api';
-    </script>
+    <div id="site-footer"></div>
+
+    <script src="js/site-config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/layout.js"></script>
     <script src="js/api-client.js"></script>
-    <script>
-        // --- ویرایش کنید (اطلاعات تماس) ---
-        const CONTACT_DATA = {
-            "title_en": "Get in Touch", "title_fa": "تماس با ما",
-            "desc_en": "Have questions? Send us a message or contact us via social media.", "desc_fa": "سوالی دارید؟ برای ما پیام بفرستید یا از طریق شبکه‌های اجتماعی با ما در ارتباط باشید.",
-            "label_name_en": "Full Name", "label_name_fa": "نام کامل",
-            "label_email_en": "Email Address", "label_email_fa": "ایمیل",
-            "label_msg_en": "Message", "label_msg_fa": "پیام شما",
-            "btn_send_en": "Send Message", "btn_send_fa": "ارسال پیام",
-            "info": [
-                {"icon": "✉️", "text_en": "support@footballive90.com", "text_fa": "support@footballive90.com"},
-                {"icon": "📱", "text_en": "+98 900 000 0000", "text_fa": "۰۹۱۲۳۴۵۶۷۸۹"},
-                {"icon": "📍", "text_en": "Tehran, Iran", "text_fa": "تهران، ایران"}
-            ]
-        };
-
-        let currentLang = 'en';
-        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = CONTACT_DATA;
-            const l = lang === 'fa' ? 'fa' : 'en';
-
-            document.getElementById('page-title').textContent = t[`title_${l}`];
-            document.getElementById('page-desc').textContent = t[`desc_${l}`];
-            document.querySelector('.text-label-name').textContent = t[`label_name_${l}`];
-            document.querySelector('.text-label-email').textContent = t[`label_email_${l}`];
-            document.querySelector('.text-label-message').textContent = t[`label_msg_${l}`];
-            document.querySelector('.text-btn-send').textContent = t[`btn_send_${l}`];
-
-            const infoHtml = t.info.map(i => 
-                `<div class="info-item"><div class="info-icon">${i.icon}</div><span>${i[`text_${l}`]}</span></div>`
-            ).join('');
-            document.getElementById('info-list').innerHTML = infoHtml;
-
-            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
-            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
-        }
-        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
-        
-        async function handleContactSubmit(event) {
-            event.preventDefault();
-            
-            const form = document.getElementById('contact-form');
-            const submitBtn = document.getElementById('submit-btn');
-            const messageDiv = document.getElementById('form-message');
-            
-            const formData = {
-                name: document.getElementById('contact-name').value,
-                email: document.getElementById('contact-email').value,
-                message: document.getElementById('contact-message').value
-            };
-            
-            // غیرفعال کردن دکمه submit
-            submitBtn.disabled = true;
-            submitBtn.textContent = currentLang === 'fa' ? 'در حال ارسال...' : 'Sending...';
-            messageDiv.style.display = 'none';
-            
-            try {
-                // تلاش برای ارسال به endpoint بک‌اند (اگر وجود داشته باشد)
-                // در صورت عدم وجود endpoint، فقط پیام موفقیت نمایش داده می‌شود
-                const API_BASE = window.FootballAPI ? window.FootballAPI.API_BASE_URL : '/api';
-                
-                const response = await fetch(`${API_BASE}/contact`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    // موفقیت
-                    showFormMessage(
-                        currentLang === 'fa' ? 'پیام شما با موفقیت ارسال شد!' : 'Your message has been sent successfully!',
-                        'success'
-                    );
-                    form.reset();
-                } else {
-                    // خطا از سرور
-                    throw new Error('Server error');
-                }
-            } catch (error) {
-                // در صورت عدم وجود endpoint یا خطا، پیام موفقیت نمایش داده می‌شود
-                // (این یک fallback است - می‌توانید بعداً endpoint را اضافه کنید)
-                console.log('Contact endpoint not available, showing success message');
-                showFormMessage(
-                    currentLang === 'fa' ? 'پیام شما دریافت شد! به زودی با شما تماس می‌گیریم.' : 'Your message has been received! We will contact you soon.',
-                    'success'
-                );
-                form.reset();
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = document.querySelector('.text-btn-send').textContent;
-            }
-        }
-        
-        function showFormMessage(message, type) {
-            const messageDiv = document.getElementById('form-message');
-            messageDiv.textContent = message;
-            messageDiv.style.display = 'block';
-            messageDiv.style.backgroundColor = type === 'success' ? 'rgba(0, 230, 118, 0.2)' : 'rgba(239, 68, 68, 0.2)';
-            messageDiv.style.color = type === 'success' ? 'var(--primary)' : '#ef4444';
-            messageDiv.style.border = `1px solid ${type === 'success' ? 'var(--primary)' : '#ef4444'}`;
-        }
-        
-        window.onload = () => setLanguage(currentLang);
-    </script>
+    <script src="js/pages/contact.js"></script>
 </body>
 </html>

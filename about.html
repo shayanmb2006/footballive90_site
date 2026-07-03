@@ -4,117 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Footballive90</title>
-    <meta name="description" content="Learn about Footballive90, your ultimate companion for live football action, stats, and news. Discover our mission and team.">
-    <meta name="keywords" content="about footballive90, football app, live scores app, about us">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #00e676; --dark-bg: #0f172a; --card-bg: #1e293b; --text-light: #f8fafc; --text-dim: #94a3b8; }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
-        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
-        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 14px; }
-        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        .about-hero { padding: 80px 5% 40px; text-align: center; }
-        .stats-container { display: flex; justify-content: center; gap: 40px; margin: 40px 0; flex-wrap: wrap; }
-        .stat-box { background: var(--card-bg); padding: 30px; border-radius: 15px; width: 200px; border: 1px solid rgba(255,255,255,0.05); }
-        .stat-number { font-size: 32px; font-weight: 900; color: var(--primary); display: block; }
-        
-        .mission-section { padding: 60px 5%; display: flex; align-items: center; justify-content: space-between; gap: 40px; max-width: 1000px; margin: 0 auto; }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
-        .team-member { text-align: center; }
-        .team-avatar { width: 80px; height: 80px; background: #333; border-radius: 50%; margin: 0 auto 10px; border: 2px solid var(--primary); object-fit: cover; }
-
-        @media (max-width: 768px) { .nav-links { display: none; } .mission-section { flex-direction: column; } }
-    </style>
+    <meta name="description" content="Learn about Footballive90 — live football scores, stats, and news in English and Persian.">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-page="about">
 
-    <header>
-        <a href="index.html" class="logo"><span>Footballive90</span></a>
-        <nav class="nav-links">
-            <a href="index.html" class="text-nav-home">Home</a>
-            <a href="about.html" class="active text-nav-about">About Us</a>
-            <a href="contact.html" class="text-nav-contact">Contact</a>
-        </nav>
-        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
-    </header>
+    <div id="site-header"></div>
 
     <div class="about-hero">
-        <h1 id="about-title" style="font-size: 42px; margin-bottom: 20px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></h1>
-        <p id="about-desc" style="color:var(--text-dim); margin-bottom:30px;"></p>
-        
-        <div class="stats-container" id="stats-grid"></div>
+        <h1 id="about-title"></h1>
+        <p id="about-desc" style="color:var(--text-dim); max-width:600px; margin:0 auto;"></p>
+        <div class="stats-grid" id="stats-grid"></div>
     </div>
 
-    <section class="mission-section">
-        <div style="flex:1;">
-            <h2 id="mission-title" style="margin-bottom: 20px; font-size: 28px;"></h2>
-            <p id="mission-text" style="color: var(--text-dim); margin-bottom: 20px;"></p>
-        </div>
-    </section>
+    <div class="mission-block">
+        <h2 id="mission-title"></h2>
+        <p id="mission-text"></p>
+    </div>
 
-    <section style="padding: 60px 5%; text-align:center;">
-        <h3 id="team-title" style="margin-top:30px;"></h3>
-        <div class="team-grid" id="team-grid"></div>
-    </section>
+    <h2 id="values-title" class="text-center" style="margin-bottom:24px;"></h2>
+    <div class="values-grid" id="values-grid"></div>
 
-    <script>
-        // --- ویرایش کنید (درباره ما) ---
-        const ABOUT_DATA = {
-            "title_en": "About Footballive90", "title_fa": "درباره فوتبال لایو ۹۰",
-            "desc_en": "Your ultimate companion for live football action, stats, and news.", "desc_fa": "همراه نهایی شما برای اکشن فوتبال زنده، آمار و اخبار.",
-            "mission_title_en": "Our Mission", "mission_title_fa": "ماموریت ما",
-            "mission_text_en": "We started Footballive90 with one goal: to provide the fastest, most accurate, and detailed football statistics for fans around the world.", "mission_text_fa": "ما فوتبال لایو ۹۰ را با یک هدف شروع کردیم: ارائه سریع‌ترین، دقیق‌ترین و جزئی‌ترین آمار فوتبال برای هواداران در سراسر جهان.",
-            "team_title_en": "Meet the Team", "team_title_fa": "تیم ما",
-            "stats": [
-                {"val": "5M+", "label_en": "Downloads", "label_fa": "دانلود"},
-                {"val": "850+", "label_en": "Leagues", "label_fa": "لیگ"},
-                {"val": "24/7", "label_en": "Live", "label_fa": "پوشش زنده"}
-            ],
-            "team": [
-                {"name": "Alex Doe", "role": "CEO", "role_fa": "مدیر عامل", "img": "https://picsum.photos/seed/u1/80/80"},
-                {"name": "Sarah Smith", "role": "Lead Dev", "role_fa": "تیم فنی", "img": "https://picsum.photos/seed/u2/80/80"}
-            ]
-        };
+    <div id="site-footer"></div>
 
-        let currentLang = 'en';
-        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = ABOUT_DATA;
-            const l = lang === 'fa' ? 'fa' : 'en';
-
-            // متون تک
-            document.getElementById('about-title').textContent = t[`title_${l}`];
-            document.getElementById('about-desc').textContent = t[`desc_${l}`];
-            document.getElementById('mission-title').textContent = t[`mission_title_${l}`];
-            document.getElementById('mission-text').textContent = t[`mission_text_${l}`];
-            document.getElementById('team-title').textContent = t[`team_title_${l}`];
-
-            // آمار
-            const statsHtml = t.stats.map(s => 
-                `<div class="stat-box"><span class="stat-number">${s.val}</span><span style="font-size:14px;color:#94a3b8;">${s[`label_${l}`]}</span></div>`
-            ).join('');
-            document.getElementById('stats-grid').innerHTML = statsHtml;
-
-            // تیم
-            const teamHtml = t.team.map(m => 
-                `<div class="team-member"><img src="${m.img}" class="team-avatar"><h4>${m.name}</h4><span style="font-size:12px;color:#94a3b8;">${lang==='fa'?m.role_fa:m.role}</span></div>`
-            ).join('');
-            document.getElementById('team-grid').innerHTML = teamHtml;
-
-            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
-            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
-        }
-        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
-        window.onload = () => setLanguage(currentLang);
-    </script>
+    <script src="js/site-config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/pages/about.js"></script>
 </body>
 </html>

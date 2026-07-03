@@ -5,87 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
     <title>Privacy Policy - Footballive90</title>
-    <meta name="description" content="Privacy Policy of Footballive90. Learn how we collect, use, and protect your personal data.">
-    <meta name="keywords" content="privacy policy, data protection, user privacy, footballive90 privacy">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #00e676; --dark-bg: #0f172a; --text-light: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--dark-bg); color: var(--text-light); font-family: 'Poppins', sans-serif; }
-        body.rtl { font-family: 'Vazirmatn', sans-serif; direction: rtl; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(15, 23, 42, 0.95); }
-        .logo { font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .lang-switch { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; cursor: pointer; }
-        
-        .policy-container { max-width: 800px; margin: 0 auto; padding: 80px 5%; }
-        .policy-container h1 { margin-bottom: 30px; font-size: 32px; }
-        .policy-container h2 { margin-top: 40px; margin-bottom: 15px; color: var(--primary); font-size: 22px; }
-        .policy-container p { margin-bottom: 20px; line-height: 1.8; color: #cbd5e1; }
-    </style>
+    <meta name="description" content="Privacy Policy of Footballive90.">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-page="privacy">
 
-    <header>
-        <a href="index.html" class="logo"><span>Footballive90</span></a>
-        <button class="lang-switch" onclick="toggleLanguage()">EN/FA</button>
-    </header>
+    <div id="site-header"></div>
 
-    <div class="policy-container">
+    <div class="policy-wrap">
         <h1 id="page-title"></h1>
         <p id="intro-text"></p>
         <div id="sections-list"></div>
     </div>
 
-    <script>
-        // --- ویرایش کنید (سیاست حریم خصوصی) ---
-        const PRIVACY_DATA = {
-            "title_en": "Privacy Policy", "title_fa": "سیاست حریم خصوصی",
-            "intro_en": "At Footballive90, we respect your privacy and are committed to protecting your personal data. This policy outlines how we collect and use your information.", 
-            "intro_fa": "در فوتبال لایو ۹۰، ما حریم خصوصی شما را محترم می‌شماریم و متعهد به حفاظت از داده‌های شخصی شما هستیم. این سیاست توضیح می‌دهد که چگونه اطلاعات شما را جمع‌آوری و استفاده می‌کنیم.",
-            "sections": [
-                {
-                    "head_en": "Data Collection", "head_fa": "جمع‌آوری داده‌ها",
-                    "text_en": "We collect minimal data to improve your experience, such as device language and general location for league preferences.", 
-                    "text_fa": "ما حداقل اطلاعات را برای بهبود تجربه شما، مانند زبان دستگاه و مکان عمومی برای تنظیمات لیگ جمع‌آوری می‌کنیم."
-                },
-                {
-                    "head_en": "Usage of Data", "head_fa": "استفاده از داده‌ها",
-                    "text_en": "Your data is used solely to provide live scores and push notifications. We do not sell your personal information.", 
-                    "text_fa": "اطلاعات شما صرفاً برای ارائه نتیجه زنده و نوتیفیکیشن استفاده می‌شود. ما اطلاعات شخصی شما را نمی‌فروشیم."
-                },
-                {
-                    "head_en": "Cookies", "head_fa": "کوکی‌ها",
-                    "text_en": "We use cookies to remember your language preference (English/Persian) and keep you logged in.", 
-                    "text_fa": "ما از کوکی‌ها برای یادآوری زبان انتخابی شما (انگلیسی/فارسی) و حفظ ورود شما استفاده می‌کنیم."
-                }
-            ]
-        };
+    <div id="site-footer"></div>
 
-        let currentLang = 'en';
-        if(window.location.hostname.includes('.ir')) currentLang = 'fa';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = PRIVACY_DATA;
-            const l = lang === 'fa' ? 'fa' : 'en';
-
-            document.getElementById('page-title').textContent = t[`title_${l}`];
-            document.getElementById('intro-text').textContent = t[`intro_${l}`];
-
-            const sectionsHtml = t.sections.map(sec => `
-                <h2>${sec[`head_${l}`]}</h2>
-                <p>${sec[`text_${l}`]}</p>
-            `).join('');
-            
-            document.getElementById('sections-list').innerHTML = sectionsHtml;
-
-            if (lang === 'fa') { document.body.classList.add('rtl'); document.body.style.fontFamily = "'Vazirmatn', sans-serif"; document.documentElement.dir = "rtl"; }
-            else { document.body.classList.remove('rtl'); document.body.style.fontFamily = "'Poppins', sans-serif"; document.documentElement.dir = "ltr"; }
-        }
-        function toggleLanguage() { setLanguage(currentLang === 'en' ? 'fa' : 'en'); }
-        window.onload = () => setLanguage(currentLang);
-    </script>
+    <script src="js/site-config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/pages/privacy.js"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+{
+  "name": "footballive90-site",
+  "private": true,
+  "scripts": {
+    "config": "node scripts/generate-config.js",
+    "serve": "npx --yes serve . -p 8090"
+  }
+}
