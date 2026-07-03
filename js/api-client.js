@@ -106,11 +106,13 @@
 
     function buildNewsUrl(item) {
 
-        if (item.external_link) return item.external_link;
+        if (item && item.id) return `news.html?id=${item.id}`;
 
         if (item.fixture_id) return buildMatchUrl(item.fixture_id);
 
-        if (item.link) return item.link;
+        if (item.external_link && item.is_external !== false) return item.external_link;
+
+        if (item.link && item.is_external !== false) return item.link;
 
         return 'news.html';
 
@@ -396,27 +398,37 @@
 
     function normalizeRssNewsItem(item) {
 
+        const hasId = Boolean(item.id);
+
         return {
+
+            id: item.id || null,
 
             categoryKey: item.categoryKey || 'NEWS',
 
-            leagueName: item.leagueName || item.source || 'News',
+            leagueName: item.leagueName || item.source || item.source_name || 'News',
 
             title_en: item.title_en || item.title || '',
 
             title_fa: item.title_fa || item.title_en || item.title || '',
 
-            image: item.image || '',
+            summary_en: item.summary_en || item.summary || '',
+
+            summary_fa: item.summary_fa || item.summary_en || item.summary || '',
+
+            image: item.image || item.image_url || '',
 
             isLogo: false,
 
-            external_link: item.external_link || item.link || '',
+            external_link: item.external_link || item.external_url || item.link || '',
 
-            link: item.external_link || item.link || 'news.html',
+            link: hasId ? `news.html?id=${item.id}` : (item.external_link || item.link || 'news.html'),
 
-            is_external: true,
+            is_external: hasId ? false : item.is_external !== false,
 
-            source: item.source || '',
+            source: item.source || item.source_name || '',
+
+            published_at: item.published_at || '',
 
         };
 
@@ -516,11 +528,25 @@
 
         if (!item) return false;
 
+        if (item.id) return true;
+
         if (item.is_external === true) return true;
 
         if (item.categoryKey === 'NEWS') return true;
 
         return Boolean(item.external_link || item.link);
+
+    }
+
+
+
+    async function getNewsArticle(articleId) {
+
+        if (!articleId) return null;
+
+        const data = await fetchAPI(withLang(`/news/${articleId}`, {}));
+
+        return data?.article ? normalizeRssNewsItem(data.article) : null;
 
     }
 
@@ -581,6 +607,8 @@
         getTodayMatches,
 
         getNewsItems,
+
+        getNewsArticle,
 
         getHeroMatch,
 

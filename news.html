@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
     <title>News - Footballive90</title>
     <meta name="description" content="Latest football news, match results, and updates.">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=20260707">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body data-page="news">
@@ -18,15 +18,19 @@
     </div>
 
     <div class="container" style="padding-bottom:60px;">
-        <div id="news-full-grid" class="news-grid"></div>
+        <div id="news-article-view" class="news-article-view" hidden></div>
+        <div id="news-list-wrap">
+            <div id="news-full-grid" class="news-grid"></div>
+        </div>
     </div>
 
     <div id="site-footer"></div>
 
     <script src="js/site-config.js?v=20260704"></script>
     <script src="js/i18n.js?v=20260704"></script>
-    <script src="js/layout.js?v=20260704"></script>
-    <script src="js/api-client.js?v=20260704"></script>
-    <script src="js/pages/news.js?v=20260704"></script>
+    <script src="js/layout.js?v=20260707"></script>
+    <script src="js/app-return.js?v=20260707"></script>
+    <script src="js/api-client.js?v=20260707"></script>
+    <script src="js/pages/news.js?v=20260707"></script>
 </body>
 </html>
