@@ -31,7 +31,7 @@
         return `
         <header class="site-header">
             <a href="index.html" class="logo" aria-label="Footballive90">
-                <span class="logo-ball" aria-hidden="true">⚽</span>
+                <img src="icons/logo.png" alt="" class="logo-img" width="44" height="44">
                 <span class="logo-text">Football<span>live90</span></span>
             </a>
             <button class="hamburger" id="menu-toggle" aria-label="Menu" type="button">☰</button>
@@ -55,7 +55,10 @@
         <footer class="site-footer">
             <div class="footer-inner">
                 <div class="footer-brand">
-                    <span class="logo-text">Football<span>live90</span></span>
+                    <div class="footer-logo-row">
+                        <img src="icons/logo.png" alt="" class="logo-img logo-img-sm" width="36" height="36">
+                        <span class="logo-text">Football<span>live90</span></span>
+                    </div>
                     <p>© ${year} Footballive90. <span data-i18n="footerRights"></span></p>
                 </div>
                 <div class="footer-links">

@@ -1,8 +1,8 @@
 (function () {
     const pageT = {
         en: { title: "Today's Matches", filterAll: 'All', filterLive: 'Live' },
-        fa: { title: 'بازی‌های امروز', filterAll: 'همه', filterLive: 'زنده' },
-    };
+            fa: { title: 'بازی‌های امروز', filterAll: 'همه', filterLive: 'زنده', liveOnly: 'فقط بازی‌های زنده لیگ‌های مطرح' },
+        };
 
     let MATCHES_DATA = [];
     let filter = 'all';
@@ -81,10 +81,22 @@
 
         try {
             if (window.FootballAPI) {
-                const matches = await FootballAPI.getTodayMatches();
-                if (matches?.length) {
-                    MATCHES_DATA = matches;
+                const [featuredFixtures, liveFixtures] = await Promise.all([
+                    FootballAPI.getFeaturedFixtures(),
+                    FootballAPI.getLiveMatches(true),
+                ]);
+                const seen = new Set();
+                const merged = [];
+                [...liveFixtures, ...featuredFixtures].forEach((f) => {
+                    const id = f.fixture?.id;
+                    if (!id || seen.has(id)) return;
+                    seen.add(id);
+                    merged.push(FootballAPI.formatFixtureForMatchCard(f));
+                });
+                if (merged.length) {
+                    MATCHES_DATA = merged;
                     renderMatches();
+                    scrollToHash();
                     return;
                 }
             }
@@ -93,6 +105,17 @@
         }
         MATCHES_DATA = [];
         renderMatches();
+    }
+
+    function scrollToHash() {
+        if (!location.hash) return;
+        requestAnimationFrame(() => {
+            const el = document.querySelector(location.hash);
+            if (el) {
+                el.classList.add('match-card-highlight');
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
     }
 
     function initFilters() {
@@ -115,5 +138,8 @@
         }, 30000);
     });
 
-    window.addEventListener('langchange', applyPageText);
+    window.addEventListener('langchange', () => {
+        applyPageText();
+        loadMatches();
+    });
 })();

@@ -7,9 +7,12 @@ window.SITE_CONFIG = {
     "appUrl": "https://footballive90.com",
     "contactEmail": "support@footballive90.com",
     "contactPhone": "",
+    "contactAddress": "",
+    "contactAddressFa": "",
+    "whatsappUrl": "",
     "instagramUrl": "",
     "telegramUrl": "",
     "twitterUrl": "",
-    "faviconUrl": "https://footballive90.com/icons/icon-72x72.png",
+    "faviconUrl": "icons/favicon.png",
     "copyrightYear": "2026"
 };

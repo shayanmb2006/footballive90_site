@@ -13,6 +13,9 @@
     }
 
     function newsCategory(item) {
+        if (item.categoryKey === 'NEWS') {
+            return item.leagueName || (SiteI18n.lang === 'fa' ? 'اخبار' : 'News');
+        }
         const league = item.leagueName || '';
         if (item.categoryKey === 'LIVE') return `${SiteI18n.t('live')} — ${league}`;
         if (item.categoryKey === 'FT') return `${SiteI18n.t('result')} — ${league}`;
@@ -24,8 +27,10 @@
         const title = lang === 'fa' ? item.title_fa : item.title_en;
         const cat = newsCategory(item);
         const imgClass = item.isLogo ? 'news-img logo-fit' : 'news-img';
+        const href = window.FootballAPI ? FootballAPI.buildNewsUrl(item) : (item.link || 'news.html');
+        const target = item.is_external ? ' target="_blank" rel="noopener noreferrer"' : '';
         return `
-        <a href="${item.link || 'matches.html'}" class="news-card">
+        <a href="${href}" class="news-card"${target}>
             <div class="news-img-wrap">
                 <img src="${item.image}" alt="${title}" class="${imgClass}" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
             </div>
@@ -73,5 +78,8 @@
         loadNews();
     });
 
-    window.addEventListener('langchange', applyPageText);
+    window.addEventListener('langchange', () => {
+        applyPageText();
+        loadNews();
+    });
 })();

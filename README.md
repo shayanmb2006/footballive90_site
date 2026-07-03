@@ -81,3 +81,26 @@ python -m http.server 8080
 ```
 
 API در localhost: `SITE_API_BASE_URL=http://localhost:5000/api`
+
+## API بک‌اند
+
+| Endpoint | کاربرد |
+|----------|--------|
+| `GET /api/football/live?featured=true&lang=fa` | لایو — لیگ‌های مطرح + ایران در FA |
+| `GET /api/football/fixtures/featured?lang=fa` | بازی‌های امروز (featured) |
+| `GET /api/site/news?lang=fa&limit=6` | اخبار RSS + ترجمه AI |
+| `POST /api/site/contact` | فرم تماس (نیاز به SMTP) |
+
+### env بک‌اند (اخبار و تماس)
+
+```env
+SITE_NEWS_RSS_EN=https://feeds.bbci.co.uk/sport/football/rss.xml
+SITE_NEWS_RSS_FA=https://www.varzesh3.com/rss/all
+SMTP_HOST=smtp.yourprovider.com
+SMTP_USERNAME=...
+SMTP_PASSWORD=...
+SITE_CONTACT_INBOX=support@footballive90.com
+```
+
+اگر RSS تنظیم نشود، اخبار از نتایج بازی‌های featured پر می‌شود.
+

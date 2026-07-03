@@ -22,7 +22,7 @@
             sending: 'در حال ارسال...',
             success: 'پیام شما با موفقیت ارسال شد!',
             received: 'پیام دریافت شد. به زودی با شما تماس می‌گیریم.',
-            error: 'ارسال نشد. دوباره تلاش کنید یا مستقیم ایمیل بزنید.',
+            error: 'ارسال نشد. سرویس ایمیل روی سرور تنظیم نشده — مستقیم ایمیل بزنید.',
         },
     };
 
@@ -48,6 +48,13 @@
         }
         if (c.contactPhone) {
             items.push(`<div class="info-item"><div class="info-icon">📱</div><span>${c.contactPhone}</span></div>`);
+        }
+        const address = SiteI18n.lang === 'fa' ? (c.contactAddressFa || c.contactAddress) : c.contactAddress;
+        if (address) {
+            items.push(`<div class="info-item"><div class="info-icon">📍</div><span>${address}</span></div>`);
+        }
+        if (c.whatsappUrl) {
+            items.push(`<div class="info-item"><div class="info-icon">💬</div><a href="${c.whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a></div>`);
         }
         if (c.telegramUrl) {
             items.push(`<div class="info-item"><div class="info-icon">✈️</div><a href="${c.telegramUrl}" target="_blank" rel="noopener">Telegram</a></div>`);
@@ -83,19 +90,32 @@
 
         try {
             const base = window.FootballAPI ? FootballAPI.API_BASE_URL : (SITE_CONFIG.apiBaseUrl || '/api');
-            const res = await fetch(`${base}/contact`, {
+            const res = await fetch(`${base}/site/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
-            if (res.ok) {
-                showMessage(pt('success'), 'success');
+            const body = await res.json().catch(() => ({}));
+            if (res.ok && body.success) {
+                showMessage(pt('received'), 'success');
                 form.reset();
+            } else if (body.error === 'smtp_not_configured') {
+                const c = window.SITE_CONFIG || {};
+                showMessage(
+                    SiteI18n.lang === 'fa'
+                        ? `سرویس ایمیل فعال نیست. مستقیم بنویسید: ${c.contactEmail || ''}`
+                        : `Email service unavailable. Write to: ${c.contactEmail || ''}`,
+                    'error'
+                );
             } else {
-                throw new Error('fail');
+                throw new Error(body.error || 'fail');
             }
         } catch {
-            showMessage(pt('error'), 'error');
+            const c = window.SITE_CONFIG || {};
+            showMessage(
+                c.contactEmail ? `${pt('error')} (${c.contactEmail})` : pt('error'),
+                'error'
+            );
         } finally {
             btn.disabled = false;
             btn.textContent = pt('btnSend');
