@@ -130,6 +130,70 @@
 
 
 
+    /** Extract both EN/FA labels from API entity (localized or indexed). */
+
+    function entityLabels(entity, fallbackEn, fallbackFa) {
+
+        if (!entity) return { en: fallbackEn, fa: fallbackFa };
+
+        const name = (entity.name || '').trim();
+
+        const nameEn = (entity.name_en || '').trim();
+
+        const nameFa = (entity.name_fa || '').trim();
+
+
+
+        if (nameFa) {
+
+            return {
+
+                en: nameEn || name || nameFa,
+
+                fa: nameFa,
+
+            };
+
+        }
+
+
+
+        if (nameEn && name && name !== nameEn) {
+
+            return { en: nameEn, fa: name };
+
+        }
+
+
+
+        return {
+
+            en: nameEn || name || fallbackEn,
+
+            fa: nameFa || name || fallbackFa,
+
+        };
+
+    }
+
+
+
+    function pickMatchTeamName(match, side, lang) {
+
+        const l = lang || getLang();
+
+        const fa = (match[`${side}_fa`] || '').trim();
+
+        const en = (match[`${side}_en`] || '').trim();
+
+        if (l === 'fa') return fa || en || '';
+
+        return en || fa || '';
+
+    }
+
+
+
     async function getLiveMatches(featured = true) {
 
         const data = await fetchAPI(withLang('/football/live', featured ? { featured: 'true' } : {}));
@@ -220,23 +284,29 @@
 
         const away = teams.away || {};
 
+        const leagueLabels = entityLabels(league, 'Unknown League', 'لیگ');
+
+        const homeLabels = entityLabels(home, 'Home', 'میزبان');
+
+        const awayLabels = entityLabels(away, 'Away', 'مهمان');
+
 
 
         return {
 
             id: fixtureData.id,
 
-            league_en: league.name_en || league.name || 'Unknown League',
+            league_en: leagueLabels.en,
 
-            league_fa: league.name_fa || league.name_en || league.name || 'لیگ',
+            league_fa: leagueLabels.fa,
 
-            home_en: home.name_en || home.name || 'Home',
+            home_en: homeLabels.en,
 
-            home_fa: home.name_fa || home.name_en || home.name || 'Home',
+            home_fa: homeLabels.fa,
 
-            away_en: away.name_en || away.name || 'Away',
+            away_en: awayLabels.en,
 
-            away_fa: away.name_fa || away.name_en || away.name || 'Away',
+            away_fa: awayLabels.fa,
 
             home_logo: home.logo || '',
 
@@ -525,6 +595,10 @@
         buildNewsUrl,
 
         pickName,
+
+        entityLabels,
+
+        pickMatchTeamName,
 
         getLang,
 

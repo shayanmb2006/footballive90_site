@@ -104,8 +104,8 @@
         if (!match || !el) return;
 
         const lang = SiteI18n.lang;
-        const home = lang === 'fa' ? match.home_fa : match.home_en;
-        const away = lang === 'fa' ? match.away_fa : match.away_en;
+        const home = FootballAPI.pickMatchTeamName(match, 'home', lang);
+        const away = FootballAPI.pickMatchTeamName(match, 'away', lang);
         const isLive = match.status === 'LIVE';
 
         el.innerHTML = `
@@ -129,8 +129,8 @@
 
         const lang = SiteI18n.lang;
         const items = matches.map((m) => {
-            const home = lang === 'fa' ? m.home_fa : m.home_en;
-            const away = lang === 'fa' ? m.away_fa : m.away_en;
+            const home = FootballAPI.pickMatchTeamName(m, 'home', lang);
+            const away = FootballAPI.pickMatchTeamName(m, 'away', lang);
             const live = m.status === 'LIVE' ? `<span class="ticker-live">● ${SiteI18n.t('live')}</span>` : '';
             return `<span class="ticker-item">${live} <strong>${home}</strong> ${m.score} <strong>${away}</strong></span>`;
         });
