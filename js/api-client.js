@@ -424,19 +424,33 @@
 
         if (data?.response?.length) {
 
-            return data.response.map(normalizeRssNewsItem);
+            return data.response.map(normalizeRssNewsItem).filter(isRealNewsItem);
 
         }
 
         const fallback = await fetchAPI(withLang('/site/news', { limit: String(limit) }));
 
-        if (fallback?.response?.length) {
+        if (fallback?.response?.length && fallback.source && fallback.source !== 'none') {
 
-            return fallback.response.map(normalizeRssNewsItem);
+            return fallback.response.map(normalizeRssNewsItem).filter(isRealNewsItem);
 
         }
 
-        return getFixtureNewsFallback(limit);
+        return [];
+
+    }
+
+
+
+    function isRealNewsItem(item) {
+
+        if (!item) return false;
+
+        if (item.is_external === true) return true;
+
+        if (item.categoryKey === 'NEWS') return true;
+
+        return Boolean(item.external_link || item.link);
 
     }
 

@@ -18,6 +18,23 @@
         return document.body.getAttribute('data-page') || 'home';
     }
 
+    function assetUrl(path) {
+        const c = cfg();
+        const ver = c.assetVersion || '2';
+        let url = (path || '').trim();
+        if (!url) return '';
+        if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/')) {
+            url = '/' + url;
+        }
+        const join = url.includes('?') ? '&' : '?';
+        return `${url}${join}v=${ver}`;
+    }
+
+    function logoUrl() {
+        const c = cfg();
+        return assetUrl(c.logoUrl || c.faviconUrl || 'icons/logo.png');
+    }
+
     function renderHeader() {
         const page = getPageId();
         const c = cfg();
@@ -31,7 +48,7 @@
         return `
         <header class="site-header">
             <a href="index.html" class="logo" aria-label="Footballive90">
-                <img src="icons/logo.png" alt="" class="logo-img" width="44" height="44">
+                <img src="${logoUrl()}" alt="Footballive90" class="logo-img" width="44" height="44">
                 <span class="logo-text">Football<span>live90</span></span>
             </a>
             <button class="hamburger" id="menu-toggle" aria-label="Menu" type="button">☰</button>
@@ -56,7 +73,7 @@
             <div class="footer-inner">
                 <div class="footer-brand">
                     <div class="footer-logo-row">
-                        <img src="icons/logo.png" alt="" class="logo-img logo-img-sm" width="36" height="36">
+                        <img src="${logoUrl()}" alt="Footballive90" class="logo-img logo-img-sm" width="36" height="36">
                         <span class="logo-text">Football<span>live90</span></span>
                     </div>
                     <p>© ${year} Footballive90. <span data-i18n="footerRights"></span></p>
@@ -95,7 +112,7 @@
     }
 
     function applyFavicon() {
-        const url = cfg().faviconUrl;
+        const url = logoUrl();
         if (!url) return;
         let link = document.querySelector('link[rel="icon"]');
         if (!link) {
@@ -104,6 +121,13 @@
             document.head.appendChild(link);
         }
         link.href = url;
+        let apple = document.querySelector('link[rel="apple-touch-icon"]');
+        if (!apple) {
+            apple = document.createElement('link');
+            apple.rel = 'apple-touch-icon';
+            document.head.appendChild(apple);
+        }
+        apple.href = url;
     }
 
     function initMenu() {

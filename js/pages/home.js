@@ -91,7 +91,7 @@
         const container = document.getElementById('dynamic-news-grid');
         if (!container) return;
         if (!NEWS_DATA.length) {
-            container.innerHTML = `<div class="empty-box">${SiteI18n.t('noData')}</div>`;
+            container.innerHTML = `<div class="empty-box">${SiteI18n.t('noNews')}</div>`;
             return;
         }
         container.innerHTML = NEWS_DATA.map(renderNewsCard).join('');

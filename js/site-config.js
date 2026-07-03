@@ -14,5 +14,7 @@ window.SITE_CONFIG = {
     "telegramUrl": "",
     "twitterUrl": "",
     "faviconUrl": "icons/favicon.png",
+    "logoUrl": "icons/logo.png",
+    "assetVersion": "20260703",
     "copyrightYear": "2026"
 };

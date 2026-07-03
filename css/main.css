@@ -226,6 +226,15 @@ img { max-width: 100%; display: block; }
 
 .hero-text { flex: 1; min-width: 280px; }
 
+.hero-logo {
+    width: clamp(72px, 18vw, 96px);
+    height: clamp(72px, 18vw, 96px);
+    border-radius: 22%;
+    object-fit: cover;
+    margin-bottom: 16px;
+    box-shadow: 0 0 28px var(--primary-glow), 0 0 12px var(--accent-blue-glow);
+}
+
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -537,6 +546,16 @@ body.rtl .match-card:hover { transform: translateX(-4px); box-shadow: 4px 0 0 va
     border-radius: 10px;
     border: 1px solid var(--card-border);
     flex-shrink: 0;
+    min-width: 64px;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.score-pill.score-updated {
+    background: rgba(164, 228, 4, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--primary-glow);
+    transform: scale(1.05);
 }
 
 .match-status {

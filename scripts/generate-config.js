@@ -25,6 +25,8 @@ const DEFAULTS = {
   telegramUrl: '',
   twitterUrl: '',
   faviconUrl: 'icons/favicon.png',
+  logoUrl: 'icons/logo.png',
+  assetVersion: '20260703',
   copyrightYear: String(new Date().getFullYear()),
 };
 
@@ -43,6 +45,8 @@ const ENV_MAP = {
   SITE_TELEGRAM_URL: 'telegramUrl',
   SITE_TWITTER_URL: 'twitterUrl',
   SITE_FAVICON_URL: 'faviconUrl',
+  SITE_LOGO_URL: 'logoUrl',
+  SITE_ASSET_VERSION: 'assetVersion',
   SITE_COPYRIGHT_YEAR: 'copyrightYear',
 };
 
