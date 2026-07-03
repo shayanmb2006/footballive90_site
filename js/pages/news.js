@@ -61,30 +61,56 @@
     }
 
     function newsCategory(item) {
-        if (item.categoryKey === 'NEWS') {
-            return item.leagueName || item.source || (SiteI18n.lang === 'fa' ? 'اخبار' : 'News');
+        const fallback = SiteI18n.lang === 'fa' ? 'اخبار' : 'News';
+        if (item && item.categoryKey === 'NEWS') {
+            return item.leagueName || item.source || item.source_name || fallback;
         }
-        const league = item.leagueName || '';
-        if (item.categoryKey === 'LIVE') return `${SiteI18n.t('live')} — ${league}`;
-        if (item.categoryKey === 'FT') return `${SiteI18n.t('result')} — ${league}`;
-        return league;
+        const league = (item && item.leagueName) || '';
+        if (item && item.categoryKey === 'LIVE') return `${SiteI18n.t('live')} — ${league}`;
+        if (item && item.categoryKey === 'FT') return `${SiteI18n.t('result')} — ${league}`;
+        return league || fallback;
+    }
+
+    function newsExcerpt(item, maxLen = 140) {
+        const lang = SiteI18n.lang;
+        const text = (lang === 'fa'
+            ? (item.summary_fa || item.summary_en || item.summary)
+            : (item.summary_en || item.summary_fa || item.summary)) || '';
+        const clean = String(text).replace(/\s+/g, ' ').trim();
+        if (!clean) return '';
+        if (clean.length <= maxLen) return clean;
+        return `${clean.slice(0, maxLen)}…`;
+    }
+
+    function formatArticleBody(item) {
+        const lang = SiteI18n.lang;
+        const raw = lang === 'fa'
+            ? (item.summary_fa || item.summary_en || item.summary)
+            : (item.summary_en || item.summary_fa || item.summary);
+        const text = String(raw || '').trim();
+        if (!text) return '';
+        const parts = text.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+        if (parts.length <= 1) return `<p>${escapeHtml(text)}</p>`;
+        return parts.map((p) => `<p>${escapeHtml(p)}</p>`).join('');
     }
 
     function renderNewsCard(item) {
         const lang = SiteI18n.lang;
         const title = lang === 'fa' ? item.title_fa : item.title_en;
         const cat = newsCategory(item);
+        const excerpt = newsExcerpt(item);
         const imgClass = item.isLogo ? 'news-img logo-fit' : 'news-img';
         const href = window.FootballAPI ? FootballAPI.buildNewsUrl(item) : (item.link || 'news.html');
         const target = item.is_external ? ' target="_blank" rel="noopener noreferrer"' : '';
         return `
         <a href="${href}" class="news-card"${target}>
             <div class="news-img-wrap">
-                <img src="${item.image}" alt="${title}" class="${imgClass}" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
+                <img src="${item.image || ''}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
             </div>
             <div class="news-content">
-                <span class="news-cat">${cat || ''}</span>
-                <h3 class="news-headline">${title}</h3>
+                <span class="news-cat">${escapeHtml(cat)}</span>
+                <h3 class="news-headline">${escapeHtml(title)}</h3>
+                ${excerpt ? `<p class="news-excerpt">${escapeHtml(excerpt)}</p>` : ''}
                 <span class="news-read">${SiteI18n.t('readMore')} →</span>
             </div>
         </a>`;
@@ -111,7 +137,7 @@
 
         const lang = SiteI18n.lang;
         const title = escapeHtml(lang === 'fa' ? item.title_fa : item.title_en);
-        const summary = escapeHtml(lang === 'fa' ? (item.summary_fa || item.summary_en) : (item.summary_en || item.summary_fa));
+        const bodyHtml = formatArticleBody(item);
         const cat = escapeHtml(newsCategory(item));
         const sourceUrl = item.external_link || '';
         const img = item.image || 'https://picsum.photos/seed/fb/800/400';
@@ -128,7 +154,7 @@
                 <div class="news-article-img-wrap">
                     <img src="${img}" alt="${title}" class="news-article-img" onerror="this.src='https://picsum.photos/seed/fb/800/400'">
                 </div>
-                <div class="news-article-body">${summary ? `<p>${summary}</p>` : ''}</div>
+                <div class="news-article-body">${bodyHtml || `<p class="news-no-summary">${SiteI18n.lang === 'fa' ? 'خلاصه کامل در منبع اصلی موجود است.' : 'Full summary is on the original source.'}</p>`}</div>
                 ${sourceUrl ? `
                 <footer class="news-article-footer">
                     <a href="${sourceUrl}" class="btn btn-outline news-source-link" target="_blank" rel="noopener noreferrer">

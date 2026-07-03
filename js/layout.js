@@ -46,6 +46,7 @@
         }).join('');
 
         return `
+        <div class="site-header-sticky">
         <header class="site-header">
             <a href="index.html" class="logo" aria-label="Footballive90">
                 <img src="${logoUrl()}" alt="Footballive90" class="logo-img" width="44" height="44">
@@ -57,7 +58,8 @@
                 <a href="${appUrl}" class="nav-link nav-cta" data-i18n="navApp" target="_blank" rel="noopener"></a>
             </nav>
             <button class="lang-switch" id="lang-switch-btn" type="button">FA</button>
-        </header>`;
+        </header>
+        </div>`;
     }
 
     function renderFooter() {
@@ -141,6 +143,46 @@
         });
     }
 
+    function initBackToTop() {
+        if (document.getElementById('back-to-top-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'back-to-top-btn';
+        btn.className = 'back-to-top';
+        btn.setAttribute('aria-label', 'Back to top');
+        btn.innerHTML = '↑';
+        document.body.appendChild(btn);
+
+        const threshold = 400;
+        let ticking = false;
+
+        function updateLabel() {
+            const t = window.SiteI18n?.t?.('backToTop');
+            const label = t || (window.SiteI18n?.lang === 'fa' ? 'برگشت به بالا' : 'Back to top');
+            btn.setAttribute('aria-label', label);
+            btn.title = label;
+        }
+
+        function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                btn.classList.toggle('visible', window.scrollY > threshold);
+                ticking = false;
+            });
+        }
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('langchange', updateLabel);
+        updateLabel();
+        onScroll();
+    }
+
     function mount() {
         const headerEl = document.getElementById('site-header');
         const footerEl = document.getElementById('site-footer');
@@ -156,6 +198,7 @@
             langBtn.dataset.bound = '1';
             langBtn.addEventListener('click', () => SiteI18n.toggleLanguage());
         }
+        initBackToTop();
     }
 
     document.addEventListener('DOMContentLoaded', mount);

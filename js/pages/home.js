@@ -56,20 +56,41 @@
         if (window.SiteLayout) SiteLayout.applyDownloadLinks();
     }
 
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
     function newsCategory(item) {
-        if (item.categoryKey === 'NEWS') {
-            return item.leagueName || (SiteI18n.lang === 'fa' ? 'اخبار' : 'News');
+        const fallback = SiteI18n.lang === 'fa' ? 'اخبار' : 'News';
+        if (item && item.categoryKey === 'NEWS') {
+            return item.leagueName || item.source || item.source_name || fallback;
         }
-        const league = item.leagueName || '';
-        if (item.categoryKey === 'LIVE') return `${SiteI18n.t('live')} — ${league}`;
-        if (item.categoryKey === 'FT') return `${SiteI18n.t('result')} — ${league}`;
-        return league;
+        const league = (item && item.leagueName) || '';
+        if (item && item.categoryKey === 'LIVE') return `${SiteI18n.t('live')} — ${league}`;
+        if (item && item.categoryKey === 'FT') return `${SiteI18n.t('result')} — ${league}`;
+        return league || fallback;
+    }
+
+    function newsExcerpt(item, maxLen = 120) {
+        const lang = SiteI18n.lang;
+        const text = (lang === 'fa'
+            ? (item.summary_fa || item.summary_en || item.summary)
+            : (item.summary_en || item.summary_fa || item.summary)) || '';
+        const clean = String(text).replace(/\s+/g, ' ').trim();
+        if (!clean) return '';
+        if (clean.length <= maxLen) return clean;
+        return `${clean.slice(0, maxLen)}…`;
     }
 
     function renderNewsCard(item) {
         const lang = SiteI18n.lang;
         const title = lang === 'fa' ? item.title_fa : item.title_en;
         const cat = newsCategory(item);
+        const excerpt = newsExcerpt(item);
         const imgClass = item.isLogo ? 'news-img logo-fit' : 'news-img';
         const href = window.FootballAPI ? FootballAPI.buildNewsUrl(item) : (item.link || 'news.html');
         const target = item.is_external ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -77,11 +98,12 @@
         return `
         <a href="${href}" class="news-card"${target}>
             <div class="news-img-wrap">
-                <img src="${item.image}" alt="${title}" class="${imgClass}" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
+                <img src="${item.image || ''}" alt="${escapeHtml(title)}" class="${imgClass}" loading="lazy" onerror="this.src='https://picsum.photos/seed/fb/400/200'">
             </div>
             <div class="news-content">
-                <span class="news-cat">${cat || ''}</span>
-                <h3 class="news-headline">${title}</h3>
+                <span class="news-cat">${escapeHtml(cat)}</span>
+                <h3 class="news-headline">${escapeHtml(title)}</h3>
+                ${excerpt ? `<p class="news-excerpt">${escapeHtml(excerpt)}</p>` : ''}
                 <span class="news-read">${readMore} →</span>
             </div>
         </a>`;
