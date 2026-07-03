@@ -46,7 +46,6 @@
         }).join('');
 
         return `
-        <div class="site-header-sticky">
         <header class="site-header">
             <a href="index.html" class="logo" aria-label="Footballive90">
                 <img src="${logoUrl()}" alt="Footballive90" class="logo-img" width="44" height="44">
@@ -58,8 +57,7 @@
                 <a href="${appUrl}" class="nav-link nav-cta" data-i18n="navApp" target="_blank" rel="noopener"></a>
             </nav>
             <button class="lang-switch" id="lang-switch-btn" type="button">FA</button>
-        </header>
-        </div>`;
+        </header>`;
     }
 
     function renderFooter() {

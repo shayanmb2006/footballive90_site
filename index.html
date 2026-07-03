@@ -11,7 +11,7 @@
     <meta property="og:type" content="website">
     <link rel="icon" href="/icons/favicon.png?v=20260703">
     <link rel="apple-touch-icon" href="/icons/logo.png?v=20260703">
-    <link rel="stylesheet" href="css/main.css?v=20260709">
+    <link rel="stylesheet" href="css/main.css?v=20260711">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body data-page="home">
@@ -54,26 +54,27 @@
         <div class="container">
             <h2 class="section-title" data-page-i18n="featuresTitle">Why Footballive90?</h2>
             <div class="features-grid">
-                <div class="feature-card">
+                <a href="matches.html" class="feature-card">
                     <div class="feature-icon">⚽</div>
                     <h3 data-page-i18n="feat1Title">Live Scores</h3>
                     <p data-page-i18n="feat1Desc">Real-time results from 850+ leagues.</p>
-                </div>
-                <div class="feature-card">
+                </a>
+                <a href="matches.html" class="feature-card">
                     <div class="feature-icon">📊</div>
                     <h3 data-page-i18n="feat2Title">Match Details</h3>
                     <p data-page-i18n="feat2Desc">Lineups, stats, and head-to-head.</p>
-                </div>
-                <div class="feature-card">
+                </a>
+                <a href="install.html" class="feature-card">
                     <div class="feature-icon">🔔</div>
                     <h3 data-page-i18n="feat3Title">Notifications</h3>
                     <p data-page-i18n="feat3Desc">Never miss a goal.</p>
-                </div>
-                <div class="feature-card">
+                </a>
+                <button type="button" class="feature-card feature-card-action" id="feature-lang-toggle" aria-label="Switch language">
                     <div class="feature-icon">🌍</div>
                     <h3 data-page-i18n="feat4Title">Bilingual</h3>
                     <p data-page-i18n="feat4Desc">English and Persian.</p>
-                </div>
+                    <span class="feature-card-cta" data-page-i18n="featLangCta">Tap to switch language</span>
+                </button>
             </div>
         </div>
     </section>
@@ -92,9 +93,9 @@
 
     <script src="js/site-config.js?v=20260704"></script>
     <script src="js/i18n.js?v=20260704"></script>
-    <script src="js/layout.js?v=20260709"></script>
+    <script src="js/layout.js?v=20260710"></script>
     <script src="js/app-return.js?v=20260707"></script>
     <script src="js/api-client.js?v=20260707"></script>
-    <script src="js/pages/home.js?v=20260708"></script>
+    <script src="js/pages/home.js?v=20260711"></script>
 </body>
 </html>

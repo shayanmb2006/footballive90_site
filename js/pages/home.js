@@ -16,6 +16,7 @@
             feat3Desc: 'Never miss a goal with instant alerts.',
             feat4Title: 'Bilingual',
             feat4Desc: 'Full support for English and Persian.',
+            featLangCta: 'Tap to switch language',
             featuresTitle: 'Why Footballive90?',
             heroBadge: 'LIVE NOW',
         },
@@ -35,6 +36,7 @@
             feat3Desc: 'هیچ گلی را از دست ندهید با هشدار فوری.',
             feat4Title: 'دو زبانه',
             feat4Desc: 'پشتیبانی کامل از فارسی و انگلیسی.',
+            featLangCta: 'برای تغییر زبان بزنید',
             featuresTitle: 'چرا فوتبال لایو ۹۰؟',
             heroBadge: 'پخش زنده',
         },
@@ -181,8 +183,16 @@
         renderNews();
     }
 
+    function initFeatureCards() {
+        const langBtn = document.getElementById('feature-lang-toggle');
+        if (langBtn && window.SiteI18n) {
+            langBtn.addEventListener('click', () => SiteI18n.toggleLanguage());
+        }
+    }
+
     function init() {
         applyPageText();
+        initFeatureCards();
         loadHero();
         loadTicker();
         loadNews();

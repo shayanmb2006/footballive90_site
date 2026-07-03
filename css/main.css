@@ -1,5 +1,6 @@
 /* Footballive90 — Stadium Night theme */
 :root {
+    --site-header-height: 74px;
     --primary: #a4e404;
     --primary-bright: #c8ff2a;
     --primary-dark: #7ab800;
@@ -30,7 +31,8 @@ body {
     color: var(--text-light);
     font-family: var(--font-en);
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: clip;
+    padding-top: var(--site-header-height);
     min-height: 100vh;
 }
 
@@ -66,15 +68,22 @@ img { max-width: 100%; display: block; }
 
 .container { width: min(1100px, 92%); margin: 0 auto; }
 
-/* ── Header ── */
-.site-header-sticky {
-    position: sticky;
+/* ── Header (fixed — sticky breaks when body has overflow-x) ── */
+#site-header {
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
+    width: 100%;
 }
 
-body.has-app-return .site-header-sticky {
+body.has-app-return #site-header {
     top: 48px;
+}
+
+body.has-app-return {
+    padding-top: calc(48px + var(--site-header-height));
 }
 
 .site-header {
@@ -85,6 +94,7 @@ body.has-app-return .site-header-sticky {
     background: rgba(10, 14, 26, 0.92);
     backdrop-filter: blur(var(--glass-blur));
     border-bottom: 1px solid var(--card-border);
+    min-height: var(--site-header-height);
 }
 
 .logo {
@@ -412,17 +422,44 @@ body.has-app-return .site-header-sticky {
     text-align: center;
     transform-style: preserve-3d;
     transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100%;
+    font: inherit;
 }
 
-.feature-card:hover {
+.feature-card-action {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.feature-card:hover,
+.feature-card:focus-visible {
     transform: translateY(-8px) rotateX(2deg);
     border-color: var(--primary);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 20px var(--primary-glow);
+    color: inherit;
+    outline: none;
+}
+
+.feature-card:focus-visible {
+    outline: 2px solid var(--primary-bright);
+    outline-offset: 2px;
 }
 
 .feature-icon { font-size: 2.2rem; margin-bottom: 12px; }
 .feature-card h3 { font-size: 1rem; margin-bottom: 8px; }
 .feature-card p { font-size: 0.85rem; color: var(--text-dim); }
+.feature-card-cta {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.02em;
+}
 
 /* News cards */
 .news-grid, .dynamic-news-container {
@@ -520,7 +557,6 @@ body.has-app-return .site-header-sticky {
 .news-source-link { display: inline-flex; align-items: center; gap: 6px; }
 
 /* App return bar (opened from PWA) */
-body.has-app-return { padding-top: 48px; }
 .app-return-bar {
     position: fixed;
     top: 0;
@@ -578,7 +614,7 @@ body.has-app-return { padding-top: 48px; }
     outline-offset: 2px;
 }
 
-.page-header { padding: 100px 5% 30px; }
+.page-header { padding: 24px 5% 30px; }
 .page-header h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
 
 .league-header {
@@ -1030,10 +1066,10 @@ body.rtl .step-card:hover { transform: translateX(-6px); }
 
     .nav-links {
         position: fixed;
-        top: 60px;
+        top: var(--site-header-height);
         inset-inline-end: -100%;
         width: 100%;
-        height: calc(100vh - 60px);
+        height: calc(100vh - var(--site-header-height));
         background: rgba(10, 14, 26, 0.98);
         flex-direction: column;
         justify-content: center;
@@ -1043,8 +1079,8 @@ body.rtl .step-card:hover { transform: translateX(-6px); }
     }
 
     body.has-app-return .nav-links {
-        top: 108px;
-        height: calc(100vh - 108px);
+        top: calc(48px + var(--site-header-height));
+        height: calc(100vh - 48px - var(--site-header-height));
     }
 
     .nav-links.active { inset-inline-end: 0; }
