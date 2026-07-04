@@ -61,9 +61,23 @@
         },
     };
 
+    function langFromUrl() {
+        try {
+            const value = new URLSearchParams(window.location.search).get('lang');
+            if (value === 'en' || value === 'fa') return value;
+        } catch {
+            /* ignore */
+        }
+        return null;
+    }
+
     function detectDefaultLang() {
+        const fromUrl = langFromUrl();
+        if (fromUrl) return fromUrl;
+
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved === 'en' || saved === 'fa') return saved;
+
         if (window.location.hostname.includes('.ir')) return 'fa';
         return 'en';
     }
@@ -100,9 +114,42 @@
         window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: currentLang } }));
     }
 
+    function syncLangToUrl(lang) {
+        try {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.history.replaceState({}, '', url.toString());
+        } catch {
+            /* ignore */
+        }
+    }
+
+    /** Keep lang + app return params on internal landing links */
+    function withContextUrl(href) {
+        if (!href) return href;
+        let url;
+        try {
+            url = new URL(href, window.location.href);
+        } catch {
+            return href;
+        }
+        if (url.origin !== window.location.origin && /^https?:\/\//i.test(String(href))) {
+            return href;
+        }
+        url.searchParams.set('lang', currentLang);
+        const current = new URLSearchParams(window.location.search);
+        ['from', 'return'].forEach((key) => {
+            const value = current.get(key);
+            if (value) url.searchParams.set(key, value);
+        });
+        const path = url.pathname.replace(/^\//, '');
+        return `${path}${url.search}${url.hash}`;
+    }
+
     function setLanguage(lang) {
         if (lang !== 'en' && lang !== 'fa') return;
         currentLang = lang;
+        syncLangToUrl(lang);
         applyLangToDOM();
     }
 
@@ -116,6 +163,7 @@
         setLanguage,
         toggleLanguage,
         applyLangToDOM,
+        withContextUrl,
         translations,
     };
 

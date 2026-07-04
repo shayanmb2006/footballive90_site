@@ -42,7 +42,10 @@
 
         const navLinks = NAV_ITEMS.map((item) => {
             const active = item.pages.includes(page) ? ' active' : '';
-            return `<a href="${item.href}" class="nav-link${active}" data-i18n="${item.key}"></a>`;
+            const href = window.SiteI18n?.withContextUrl
+                ? SiteI18n.withContextUrl(item.href)
+                : item.href;
+            return `<a href="${href}" class="nav-link${active}" data-i18n="${item.key}"></a>`;
         }).join('');
 
         return `

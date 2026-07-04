@@ -157,7 +157,7 @@
 
     function buildNewsUrl(item) {
 
-        if (item && item.id) return `news.html?id=${item.id}`;
+        if (item && item.id) return withContextUrl(`news.html?id=${item.id}`);
 
         if (item.fixture_id) return buildMatchUrl(item.fixture_id);
 
@@ -165,8 +165,13 @@
 
         if (item.link && item.is_external !== false) return item.link;
 
-        return 'news.html';
+        return withContextUrl('news.html');
 
+    }
+
+    function withContextUrl(href) {
+        if (window.SiteI18n?.withContextUrl) return window.SiteI18n.withContextUrl(href);
+        return href;
     }
 
 
@@ -474,7 +479,7 @@
 
             external_link: item.external_link || item.external_url || item.link || '',
 
-            link: hasId ? `news.html?id=${item.id}` : (item.external_link || item.link || 'news.html'),
+            link: hasId ? withContextUrl(`news.html?id=${item.id}`) : (item.external_link || item.link || withContextUrl('news.html')),
 
             is_external: hasId ? false : item.is_external !== false,
 

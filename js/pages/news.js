@@ -41,7 +41,7 @@
             };
         }
         return {
-            href: 'news.html',
+            href: window.SiteI18n?.withContextUrl ? SiteI18n.withContextUrl('news.html') : 'news.html',
             label: SiteI18n.t('backToNews'),
         };
     }
