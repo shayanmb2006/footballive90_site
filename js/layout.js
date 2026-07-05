@@ -59,7 +59,7 @@
                 ${navLinks}
                 <a href="${appUrl}" class="nav-link nav-cta" data-i18n="navApp" target="_blank" rel="noopener"></a>
             </nav>
-            <button class="lang-switch" id="lang-switch-btn" type="button">FA</button>
+            <button class="lang-switch" id="lang-switch-btn" type="button">EN</button>
         </header>`;
     }
 

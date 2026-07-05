@@ -36,7 +36,7 @@
 
     function getLang() {
 
-        return window.SiteI18n?.lang || (window.location.hostname.includes('.ir') ? 'fa' : 'en');
+        return window.SiteI18n?.lang || 'fa';
 
     }
 

@@ -78,11 +78,13 @@
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved === 'en' || saved === 'fa') return saved;
 
-        if (window.location.hostname.includes('.ir')) return 'fa';
-        return 'en';
+        return 'fa';
     }
 
     let currentLang = detectDefaultLang();
+
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
 
     function t(key) {
         return translations[currentLang][key] || translations.en[key] || key;

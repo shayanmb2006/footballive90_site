@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://mallmanbackend.footballive90.com https://mallmanbackend.shayanmb.online https://footballive90.com https://*.footballive90.com https://footballive90.ir https://*.footballive90.ir https://footballive.ir https://*.footballive.ir; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
-    <title>Home - Footballive90</title>
-    <meta name="description" content="Live football scores, match details, and news. The fastest app for fans. Android, iOS, and PWA.">
-    <meta property="og:title" content="Footballive90 - Live Scores & Football News">
-    <meta property="og:description" content="The fastest app for live scores, match details, and news.">
+    <title>فوتبال لایو ۹۰ — نتایج زنده فوتبال</title>
+    <meta name="description" content="نتایج زنده فوتبال، جزئیات بازی و اخبار. سریع‌ترین اپ برای اندروید، iOS و وب.">
+    <meta property="og:title" content="Footballive90 - نتایج زنده و اخبار فوتبال">
+    <meta property="og:description" content="سریع‌ترین اپلیکیشن نتیجه زنده، جزئیات بازی و اخبار فوتبال.">
     <meta property="og:type" content="website">
     <link rel="icon" href="/icons/favicon.png?v=20260703">
     <link rel="apple-touch-icon" href="/icons/logo.png?v=20260703">
@@ -27,23 +27,23 @@
             <img src="/icons/logo.png?v=20260703" alt="Footballive90" class="hero-logo" width="96" height="96">
             <div class="hero-badge" id="hero-badge">
                 <span class="pulse-dot"></span>
-                <span data-page-i18n="heroBadge">LIVE NOW</span>
+                <span data-page-i18n="heroBadge">پخش زنده</span>
             </div>
-            <h1 data-page-i18n="heroTitle">Live Scores & Football News</h1>
-            <p class="hero-desc" data-page-i18n="heroDesc">The fastest app for live scores, match details, and news.</p>
+            <h1 data-page-i18n="heroTitle">نتایج زنده و اخبار فوتبال</h1>
+            <p class="hero-desc" data-page-i18n="heroDesc">سریع‌ترین اپلیکیشن نتیجه زنده، جزئیات بازی و اخبار. برای اندروید، iOS و وب.</p>
             <div class="download-btns">
-                <a href="#" class="btn btn-store" data-link="android"><span>🤖</span> <span data-page-i18n="btnAndroid">Download Android</span></a>
-                <a href="#" class="btn btn-store" data-link="ios"><span>🍎</span> <span data-page-i18n="btnIOS">Download iOS</span></a>
-                <a href="install.html" class="btn btn-primary" data-link="pwa"><span>🌐</span> <span data-page-i18n="btnPWA">Install App</span></a>
+                <a href="#" class="btn btn-store" data-link="android"><span>🤖</span> <span data-page-i18n="btnAndroid">دانلود اندروید</span></a>
+                <a href="#" class="btn btn-store" data-link="ios"><span>🍎</span> <span data-page-i18n="btnIOS">دانلود آیفون</span></a>
+                <a href="install.html" class="btn btn-primary" data-link="pwa"><span>🌐</span> <span data-page-i18n="btnPWA">نصب اپلیکیشن</span></a>
             </div>
         </div>
         <div class="hero-visual">
             <div class="phone-mockup">
                 <div class="screen-content">
                     <div class="live-score-display" id="hero-live-score">
-                        <span class="live-label">● LIVE</span>
+                        <span class="live-label">● زنده</span>
                         <div class="score-big">—</div>
-                        <div class="match-teams-text">Loading...</div>
+                        <div class="match-teams-text">در حال بارگذاری...</div>
                     </div>
                 </div>
             </div>
@@ -52,28 +52,28 @@
 
     <section class="section">
         <div class="container">
-            <h2 class="section-title" data-page-i18n="featuresTitle">Why Footballive90?</h2>
+            <h2 class="section-title" data-page-i18n="featuresTitle">چرا فوتبال لایو ۹۰؟</h2>
             <div class="features-grid">
                 <a href="matches.html" class="feature-card">
                     <div class="feature-icon">⚽</div>
-                    <h3 data-page-i18n="feat1Title">Live Scores</h3>
-                    <p data-page-i18n="feat1Desc">Real-time results from 850+ leagues.</p>
+                    <h3 data-page-i18n="feat1Title">نتایج زنده</h3>
+                    <p data-page-i18n="feat1Desc">نتایج لحظه‌ای از بیش از ۸۵۰ لیگ در سراسر جهان.</p>
                 </a>
                 <a href="matches.html" class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3 data-page-i18n="feat2Title">Match Details</h3>
-                    <p data-page-i18n="feat2Desc">Lineups, stats, and head-to-head.</p>
+                    <h3 data-page-i18n="feat2Title">جزئیات بازی</h3>
+                    <p data-page-i18n="feat2Desc">ترکیب، آمار و سابقه بازی‌های قبلی.</p>
                 </a>
                 <a href="install.html" class="feature-card">
                     <div class="feature-icon">🔔</div>
-                    <h3 data-page-i18n="feat3Title">Notifications</h3>
-                    <p data-page-i18n="feat3Desc">Never miss a goal.</p>
+                    <h3 data-page-i18n="feat3Title">اعلان‌ها</h3>
+                    <p data-page-i18n="feat3Desc">هیچ گلی را از دست ندهید با هشدار فوری.</p>
                 </a>
-                <button type="button" class="feature-card feature-card-action" id="feature-lang-toggle" aria-label="Switch language">
+                <button type="button" class="feature-card feature-card-action" id="feature-lang-toggle" aria-label="تغییر زبان">
                     <div class="feature-icon">🌍</div>
-                    <h3 data-page-i18n="feat4Title">Bilingual</h3>
-                    <p data-page-i18n="feat4Desc">English and Persian.</p>
-                    <span class="feature-card-cta" data-page-i18n="featLangCta">Tap to switch language</span>
+                    <h3 data-page-i18n="feat4Title">دو زبانه</h3>
+                    <p data-page-i18n="feat4Desc">پشتیبانی کامل از فارسی و انگلیسی.</p>
+                    <span class="feature-card-cta" data-page-i18n="featLangCta">برای تغییر زبان بزنید</span>
                 </button>
             </div>
         </div>
@@ -81,10 +81,10 @@
 
     <section class="section">
         <div class="container">
-            <h2 class="section-title" data-page-i18n="sectionNews">Latest Updates</h2>
+            <h2 class="section-title" data-page-i18n="sectionNews">آخرین به‌روزرسانی‌ها</h2>
             <div id="dynamic-news-grid" class="dynamic-news-container"></div>
             <div class="text-center mt-2">
-                <a href="news.html" class="btn btn-outline"><span data-page-i18n="readAll">Read All News</span></a>
+                <a href="news.html" class="btn btn-outline"><span data-page-i18n="readAll">مشاهده همه</span></a>
             </div>
         </div>
     </section>
